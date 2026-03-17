@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>サービス紹介 | マイサイト</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.85;color:#2d3142;background:#f8f9fc;min-height:100vh;}
+a{color:#5b8df6;text-decoration:none;}
+a:hover{text-decoration:underline;}
+/* Layout */
+.site-header{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 24px;height:56px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.site-header .site-logo{font-weight:700;font-size:16px;color:#2d3142;text-decoration:none;}
+.site-wrapper{display:flex;max-width:1140px;margin:0 auto;padding:32px 24px;gap:32px;align-items:flex-start;}
+.side-nav{width:220px;flex-shrink:0;position:sticky;top:80px;}
+.side-nav .nav-list{list-style:none;padding:0;}
+.side-nav .nav-depth-0>li>a{display:block;padding:7px 12px;border-radius:7px;font-weight:500;font-size:13.5px;color:#4a5568;transition:all .12s;border-left:2px solid transparent;}
+.side-nav .nav-depth-0>li>a:hover{background:#eef3ff;color:#5b8df6;border-left-color:#5b8df6;text-decoration:none;}
+.side-nav .nav-depth-0>li.nav-active>a{background:#eef3ff;color:#5b8df6;border-left-color:#5b8df6;font-weight:600;}
+.side-nav .nav-depth-1{padding-left:14px;}
+.side-nav .nav-depth-1>li>a{display:block;padding:5px 10px;border-radius:5px;font-size:12.5px;color:#64748b;transition:all .12s;}
+.side-nav .nav-depth-1>li>a:hover{color:#5b8df6;background:#f0f4ff;text-decoration:none;}
+.side-nav .nav-depth-1>li.nav-active>a{color:#5b8df6;font-weight:600;}
+.side-nav .nav-depth-2{padding-left:12px;}
+.side-nav .nav-depth-2>li>a{display:block;padding:4px 8px;font-size:12px;color:#94a3b8;transition:color .12s;}
+.side-nav .nav-depth-2>li>a:hover{color:#5b8df6;text-decoration:none;}
+.main-content{flex:1;min-width:0;background:#fff;border-radius:12px;padding:32px 36px;border:1px solid #e2e8f0;}
+/* Breadcrumb */
+.breadcrumb{font-size:12px;color:#94a3b8;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:2px;align-items:center;}
+.bc-link{color:#5b8df6;transition:color .12s;}
+.bc-link:hover{color:#3b6de0;}
+.bc-sep{color:#cbd5e1;}
+.bc-current{color:#64748b;}
+/* Typography */
+h1{font-size:24px;font-weight:700;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #5b8df6;color:#1a1f3a;}
+h2{font-size:18px;font-weight:700;padding:9px 14px;background:linear-gradient(135deg,#eef3ff,#f3eeff);border-left:4px solid #5b8df6;border-radius:0 7px 7px 0;margin:24px 0 12px;}
+h3{font-size:16px;color:#5b8df6;border-bottom:1px solid #e2e8f0;padding-bottom:5px;margin:20px 0 10px;}
+h4{font-size:14px;font-weight:600;margin:14px 0 7px;}
+p{margin-bottom:13px;}
+ul,ol{padding-left:22px;margin-bottom:13px;}
+li{margin-bottom:4px;}
+blockquote{border-left:3px solid #8b5cf6;padding:10px 15px;background:#f9f7ff;border-radius:0 7px 7px 0;margin:13px 0;color:#555;font-style:italic;}
+img{max-width:100%;border-radius:8px;margin:8px 0;}
+table{width:100%;border-collapse:collapse;margin:14px 0;}
+th{background:#eef3ff;color:#5b8df6;padding:9px 13px;text-align:left;border:1px solid #dce6ff;font-weight:600;}
+td{padding:9px 13px;border:1px solid #e2e8f0;color:#4a5568;}
+tr:nth-child(even) td{background:#f8faff;}
+.balloon{display:flex;gap:10px;align-items:flex-start;margin:14px 0;}
+.balloon.r{flex-direction:row-reverse;}
+.b-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#5b8df6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.b-bubble{background:#f5f7fb;border:1px solid #dce6ff;border-radius:0 12px 12px 12px;padding:9px 13px;font-size:14px;max-width:78%;line-height:1.75;}
+.balloon.r .b-bubble{border-radius:12px 0 12px 12px;background:#eef3ff;}
+.cms-btn-wrap{margin:10px 0;}
+.cms-btn{display:inline-flex;align-items:center;padding:11px 30px;background:linear-gradient(135deg,#5b8df6,#8b5cf6);color:#fff;border-radius:9px;text-decoration:none;font-weight:700;font-size:14px;}
+.deco-box{border:2px solid #5b8df6;border-radius:10px;padding:13px 17px;margin:13px 0;background:#eef3ff;}
+.deco-box.warn{border-color:#f59e0b;background:#fffbeb;}
+.deco-box.ok{border-color:#10b981;background:#ecfdf5;}
+.db-title{font-weight:700;font-size:13px;color:#5b8df6;margin-bottom:7px;}
+.deco-box.warn .db-title{color:#f59e0b;}
+.deco-box.ok .db-title{color:#10b981;}
+.faq-item{border:1px solid #dce6ff;border-radius:8px;margin-bottom:8px;overflow:hidden;}
+.faq-q{padding:11px 14px;background:#f0f4ff;font-weight:600;display:flex;gap:8px;}
+.faq-q::before{content:'Q';color:#5b8df6;font-weight:800;flex-shrink:0;}
+.faq-a{padding:11px 14px;color:#4a5568;font-size:14px;line-height:1.75;border-top:1px solid #dce6ff;display:flex;gap:8px;}
+.faq-a::before{content:'A';color:#f97316;font-weight:800;flex-shrink:0;}
+.rank-item{display:flex;align-items:center;gap:14px;padding:13px 15px;border:1px solid #dce6ff;border-radius:9px;margin-bottom:8px;background:#f8faff;}
+.rank-n{font-size:22px;font-weight:900;min-width:32px;text-align:center;color:#bbb;}
+.rank-item:nth-child(1) .rank-n{color:#f59e0b;}
+.rank-item:nth-child(2) .rank-n{color:#94a3b8;}
+.rank-item:nth-child(3) .rank-n{color:#cd853f;}
+.rank-t{font-weight:600;margin-bottom:2px;}
+.rank-d{font-size:13px;color:#64748b;}
+.review-item{background:#f8faff;border:1px solid #dce6ff;border-radius:9px;padding:13px 15px;margin-bottom:8px;}
+.rev-stars{color:#f59e0b;font-size:14px;margin-bottom:5px;}
+.rev-text{font-size:14px;color:#4a5568;line-height:1.75;margin-bottom:7px;}
+.rev-author{font-size:12px;color:#94a3b8;}
+.flowchart{display:flex;flex-direction:column;align-items:center;margin:14px 0;}
+.fc-step{background:#eef3ff;border:1px solid #5b8df6;border-radius:9px;padding:11px 22px;text-align:center;width:78%;font-weight:500;}
+.fc-arrow{color:#5b8df6;font-size:18px;margin:3px 0;}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">マイサイト</a>
+</header>
+<div class="site-wrapper">
+  <nav class="side-nav">
+<ul class="nav-list nav-depth-0">
+  <li><a href="index.html">トップページ</a>
+  <ul class="nav-list nav-depth-1">
+    <li class="nav-active"><a href="mmu8pjqd1oe.html">サービス紹介</a></li>
+  </ul>
+  </li>
+  <li><a href="cms.html">CMS記事作成ツール</a></li>
+</ul>
+</nav>
+  <main class="main-content">
+    <nav class="breadcrumb"><a href="index.html" class="bc-link">トップページ</a><span class="bc-sep"> › </span><span class="bc-current">サービス紹介</span></nav>
+    <h1>サービス紹介</h1>
+    <h2>サービス紹介</h2><p>サービスの内容を入力してください。</p>
+  </main>
+</div>
+</body>
+</html>
