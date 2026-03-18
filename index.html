@@ -23,7 +23,7 @@
   --text3:   #4a5170;
   --sidebar: 256px;
   --topbar:  46px;
-  --toolbar: 48px;
+  --toolbar: 58px;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -37,6 +37,41 @@ body {
   display:flex;
   flex-direction:column;
 }
+
+/* ── ファイルメニュードロップダウン ── */
+.tb-dropdown { position:relative; }
+.tb-dropdown-menu {
+  display:none;
+  position:absolute;
+  top:calc(100% + 6px);
+  left:0;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  z-index:500;
+  min-width:230px;
+  padding:6px 0;
+  overflow:hidden;
+}
+.tb-dropdown-menu.open { display:block; }
+.tb-dd-section {
+  font-size:10px;font-weight:700;letter-spacing:.1em;
+  color:var(--text3);text-transform:uppercase;
+  padding:8px 14px 4px;
+}
+.tb-dd-item {
+  display:flex;align-items:center;gap:10px;
+  width:100%;padding:9px 14px;
+  background:none;border:none;
+  font-family:inherit;font-size:13px;
+  color:var(--text2);cursor:pointer;
+  text-align:left;transition:background .1s;
+}
+.tb-dd-item:hover { background:var(--bg3);color:var(--text); }
+.tb-dd-item div { display:flex;flex-direction:column;gap:1px; }
+.tb-dd-sub { font-size:11px;color:var(--text3); }
+.tb-dd-sep { height:1px;background:var(--border);margin:4px 0; }
 
 /* ── TOPBAR ──────────────────────────── */
 #topbar {
@@ -102,76 +137,6 @@ body {
 .tb-btn.ok:hover{opacity:.88;color:#0a1a12;}
 .vsep{width:1px;height:22px;background:var(--border);}
 
-/* ── TOPBAR DROPDOWN ─────────────────── */
-.tb-dropdown {
-  position: relative;
-  display: flex;
-}
-.tb-dropdown-menu {
-  display: none;
-  position: absolute;
-  top: calc(100% + 5px);
-  right: 0;
-  min-width: 220px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  box-shadow: 0 6px 24px rgba(0,0,0,.45);
-  z-index: 400;
-  padding: 5px 0;
-  flex-direction: column;
-}
-.tb-dropdown-menu.open { display: flex; }
-.tb-dd-head {
-  padding: 6px 14px 4px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  color: var(--text3);
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 3px;
-}
-.tb-dd-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
-  font-size: 12.5px;
-  color: var(--text2);
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-family: inherit;
-  text-align: left;
-  width: 100%;
-  transition: background .1s;
-  white-space: nowrap;
-}
-.tb-dd-item:hover { background: var(--bg3); color: var(--text); }
-.tb-dd-item .dd-site-name {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.tb-dd-item .dd-badge {
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 10px;
-  background: rgba(52,211,153,.15);
-  color: var(--ok);
-  flex-shrink: 0;
-}
-.tb-dd-item .dd-badge.warn {
-  background: rgba(251,191,36,.15);
-  color: var(--warn);
-}
-.tb-dd-sep { height: 1px; background: var(--border); margin: 4px 0; }
-.tb-dd-item.primary-action {
-  color: var(--accent);
-  font-weight: 600;
-}
 /* ── LAYOUT ─────────────────────────── */
 #app{display:flex;flex:1;overflow:hidden;}
 
@@ -327,18 +292,29 @@ body {
 }
 #toolbar::-webkit-scrollbar{height:3px;}
 #toolbar::-webkit-scrollbar-thumb{background:var(--border);}
+.te-label {
+  display:block;
+  font-size:9px;
+  line-height:1;
+  color:var(--text3);
+  margin-top:2px;
+  white-space:nowrap;
+  font-family:'Noto Sans JP',sans-serif;
+}
+.te:hover .te-label { color:var(--text2); }
+.te.on .te-label { color:var(--accent); }
 .tg{display:flex;align-items:center;gap:1px;padding:0 3px;border-right:1px solid var(--border);}
 .tg:last-child{border-right:none;}
 .te {
-  min-width:28px;height:28px;
+  min-width:34px;height:46px;
   background:none;border:1px solid transparent;
   border-radius:5px;
   color:var(--text2);cursor:pointer;
   font-size:12.5px;font-family:'DM Mono',monospace;font-weight:500;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
   transition:all .1s;
   padding:0 6px;
-  white-space:nowrap;
+  white-space:nowrap;gap:1px;
 }
 .te:hover{background:var(--bg3);border-color:var(--border);color:var(--text);}
 .te.on{background:rgba(91,141,246,.15);border-color:var(--accent);color:var(--accent);}
@@ -425,6 +401,8 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
   padding-bottom:5px;margin:18px 0 8px;
 }
 #editor h4{font-size:14px;margin:14px 0 6px;color:var(--text2);}
+#editor h5{font-size:13px;margin:12px 0 5px;color:var(--text3);font-weight:700;}
+#editor h6{font-size:12px;margin:10px 0 4px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
 #editor ul,#editor ol{padding-left:22px;margin-bottom:12px;}
 #editor li{margin-bottom:4px;}
 #editor blockquote{
@@ -687,154 +665,6 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
 }
 #toast.show{transform:translateY(0);opacity:1;}
 
-/* ── PAGE PREVIEW POPUP ─────────────────── */
-#page-preview-popup {
-  position: fixed;
-  left: 0; /* JSで動的に設定 */
-  top: 0;
-  width: 280px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: 4px 4px 24px rgba(0,0,0,.45);
-  z-index: 500;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity .15s, transform .15s;
-}
-#page-preview-popup.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-#page-preview-popup .pp-title {
-  padding: 8px 12px 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text2);
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  background: var(--bg3);
-}
-#page-preview-popup .pp-frame-wrap {
-  width: 280px;
-  height: 180px;
-  overflow: hidden;
-  position: relative;
-  background: #fff;
-}
-#page-preview-popup iframe {
-  width: 900px;
-  height: 580px;
-  border: none;
-  transform-origin: top left;
-  transform: scale(0.311);
-  pointer-events: none;
-}
-
-/* ── SITE LIST SECTION ──────────────────── */
-#site-list-section {
-  flex-shrink: 0;
-  border-bottom: 2px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  max-height: 40%;
-}
-#site-list-items {
-  overflow-y: auto;
-  padding: 3px 0 4px;
-}
-#site-list-items::-webkit-scrollbar { width: 3px; }
-#site-list-items::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-.si {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 10px 5px 8px;
-  cursor: pointer;
-  border-left: 2px solid transparent;
-  transition: background .1s, border-color .1s;
-  min-height: 28px;
-  position: relative;
-}
-.si:hover { background: var(--bg3); }
-.si.active {
-  background: rgba(91,141,246,.1);
-  border-left-color: var(--accent);
-}
-.si-icon { font-size: 12px; flex-shrink: 0; }
-.si-name {
-  flex: 1;
-  font-size: 12px;
-  color: var(--text2);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.si.active .si-name { color: var(--text); font-weight: 600; }
-.si-pages {
-  font-size: 10px;
-  color: var(--text3);
-  flex-shrink: 0;
-}
-.si-actions {
-  display: none;
-  align-items: center;
-  gap: 1px;
-  flex-shrink: 0;
-}
-.si:hover .si-actions { display: flex; }
-.si:hover .si-pages { display: none; }
-.si-act {
-  width: 18px; height: 18px;
-  background: none; border: none;
-  border-radius: 3px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; color: var(--text3);
-  transition: background .1s, color .1s;
-}
-.si-act:hover { background: var(--bg); color: var(--text2); }
-.si-act.del:hover { color: var(--danger); }
-.si-act.newtab:hover { color: var(--accent); }
-.si-act-ftp { color: var(--ok) !important; }
-.si-act-gh  { color: var(--accent) !important; }
-
-/* ── PROJECT SWITCHER BAR (非表示化) ──── */
-#proj-bar { display: none; }
-#proj-name-label {}
-
-/* ── PROJECT MODAL ──────────────────────── */
-.proj-item {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:9px 12px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  margin-bottom:6px;
-  transition:border-color .12s, background .12s;
-  cursor:pointer;
-}
-.proj-item:hover { border-color:var(--accent); background:rgba(91,141,246,.05); }
-.proj-item.current { border-color:var(--accent); background:rgba(91,141,246,.09); }
-.proj-item-icon { font-size:16px; flex-shrink:0; }
-.proj-item-info { flex:1; min-width:0; }
-.proj-item-title { font-size:13px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.proj-item-meta { font-size:11px; color:var(--text3); margin-top:2px; }
-.proj-item-actions { display:flex; gap:3px; flex-shrink:0; }
-.proj-act-btn {
-  width:26px; height:26px;
-  background:none; border:1px solid var(--border);
-  border-radius:5px; cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-  font-size:12px; color:var(--text3); transition:all .12s;
-}
-.proj-act-btn:hover { border-color:var(--danger); color:var(--danger); background:rgba(248,113,113,.08); }
-
 /* ── DRAG & DROP ──────────────────────── */
 .pi.drag-over-top::before {
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -975,24 +805,6 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
 }
 .tpl-name{font-size:12px;font-weight:600;padding:6px 10px 2px;color:var(--text);}
 .tpl-desc{font-size:11px;padding:0 10px 8px;color:var(--text3);line-height:1.4;}
-
-/* ── 追加テンプレートプレビュー ── */
-/* Yahoo風ディレクトリ */
-.tpl-yahoo{background:#fff;}
-.tpl-yahoo .tpl-prev-header{background:#400040;color:#fff;height:18px;font-size:8px;}
-.tpl-yahoo .tpl-prev-nav{background:#600060;color:#ffcc00;font-size:7px;width:100%;height:14px;top:18px;left:0;display:flex;align-items:center;padding:0 4px;border-bottom:2px solid #ffcc00;}
-.tpl-yahoo .tpl-prev-body{background:#fff;top:36px;left:4px;right:4px;border:1px solid #ccc;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:3px;}
-/* 2コラム */
-.tpl-2col{background:#f4f6f8;}
-.tpl-2col .tpl-prev-header{background:#2c3e50;color:#3498db;height:16px;}
-.tpl-2col .tpl-prev-nav{background:#ecf0f1;border-right:1px solid #bdc3c7;color:#2c3e50;top:16px;width:28px;}
-.tpl-2col .tpl-prev-body{background:#fff;top:20px;left:32px;right:4px;bottom:4px;border:1px solid #ddd;}
-/* 3コラム */
-.tpl-3col{background:#f0f2f5;}
-.tpl-3col .tpl-prev-header{background:#1877f2;color:#fff;height:16px;}
-.tpl-3col .tpl-prev-nav{background:#f0f2f5;border-right:1px solid #ddd;color:#1877f2;top:16px;width:22px;}
-.tpl-3col .tpl-prev-body{background:#fff;top:20px;left:26px;right:28px;bottom:4px;border:1px solid #ddd;}
-.tpl-3col::after{content:'';position:absolute;top:20px;right:4px;width:20px;bottom:4px;background:#f0f2f5;border:1px solid #ddd;border-radius:3px;}
 
 /* ══════════════════════════════════════
    RESPONSIVE
@@ -1155,19 +967,56 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
     <span class="tb-btn-label">新規作成</span>
   </button>
   <div class="vsep"></div>
-  <button class="tb-btn" onclick="saveProject()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-    <span class="tb-btn-label">保存</span>
-  </button>
-  <button class="tb-btn" onclick="document.getElementById('load-input').click()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-    <span class="tb-btn-label">読込</span>
-  </button>
+
+  <!-- ファイルメニュー -->
+  <div class="tb-dropdown" id="file-menu-wrap">
+    <button class="tb-btn" onclick="toggleFileMenu(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      <span class="tb-btn-label">ファイル</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px;margin-left:2px;"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="tb-dropdown-menu" id="file-menu">
+      <div class="tb-dd-section">名前をつけて保存</div>
+      <button class="tb-dd-item" onclick="saveAsCurrentPage();closeFileMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <div>
+          <div>単一HTMLファイル</div>
+          <div class="tb-dd-sub">現在のページを .html で保存</div>
+        </div>
+      </button>
+      <button class="tb-dd-item" onclick="saveSiteToFolder();closeFileMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><polyline points="12 11 12 17"/><polyline points="9 14 12 17 15 14"/></svg>
+        <div>
+          <div>全ページをフォルダに出力</div>
+          <div class="tb-dd-sub">フォルダを選択して全ページを保存</div>
+        </div>
+      </button>
+      <button class="tb-dd-item" onclick="saveProject();closeFileMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <div>
+          <div>JSON形式で保存</div>
+          <div class="tb-dd-sub">プロジェクトデータをバックアップ</div>
+        </div>
+      </button>
+      <div class="tb-dd-sep"></div>
+      <button class="tb-dd-item" onclick="document.getElementById('load-input').click();closeFileMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div>
+          <div>JSONを読み込む</div>
+          <div class="tb-dd-sub">保存済みプロジェクトを開く</div>
+        </div>
+      </button>
+      <button class="tb-dd-item" onclick="openImportModal();closeFileMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="12 18 12 12"/><polyline points="9 15 12 18 15 15"/></svg>
+        <div>
+          <div>HTML / CSS を取り込む</div>
+          <div class="tb-dd-sub">既存ファイルをページとして読み込む</div>
+        </div>
+      </button>
+    </div>
+  </div>
   <input id="load-input" type="file" accept=".json" style="display:none" onchange="loadProject(this)">
-  <button class="tb-btn" onclick="openImportModal()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="12 18 12 12"/><polyline points="9 15 12 18 15 15"/></svg>
-    <span class="tb-btn-label">HTML取込</span>
-  </button>
+
   <div class="vsep"></div>
   <button class="tb-btn" onclick="togglePreview()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -1177,46 +1026,48 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
     <span class="tb-btn-label">テンプレート</span>
   </button>
-  <!-- FTP ドロップダウン -->
-  <div class="tb-dropdown" id="ftp-dropdown">
-    <button class="tb-btn" id="ftp-dd-btn" onclick="toggleTbDropdown('ftp')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      <span class="tb-btn-label">FTP</span>
-      <svg viewBox="0 0 10 6" fill="currentColor" style="width:8px;height:8px;opacity:.5"><path d="M0 0l5 6 5-6z"/></svg>
+  <button class="tb-btn" onclick="openFtpModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span class="tb-btn-label">FTP設定</span>
+  </button>
+  <button class="tb-btn" onclick="openGithubModal()">
+    <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    <span class="tb-btn-label">GitHub</span>
+  </button>
+
+  <!-- アップロードドロップダウン -->
+  <div class="tb-dropdown" id="upload-menu-wrap">
+    <button class="tb-btn ok" onclick="toggleUploadMenu(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+      <span class="tb-btn-label">アップロード</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px;margin-left:2px;"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
-    <div class="tb-dropdown-menu" id="ftp-dd-menu">
-      <div class="tb-dd-head">サイトを選択してFTP設定</div>
-      <div id="ftp-dd-sites"></div>
+    <div class="tb-dropdown-menu" id="upload-menu">
+      <div class="tb-dd-section">ワンクリックでアップロード</div>
+      <button class="tb-dd-item" onclick="quickUploadFtp();closeUploadMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <div>
+          <div>FTP / SFTP でアップロード</div>
+          <div class="tb-dd-sub" id="upload-ftp-info">設定を確認中…</div>
+        </div>
+      </button>
+      <button class="tb-dd-item" onclick="quickUploadGithub();closeUploadMenu()">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        <div>
+          <div>GitHub へ push</div>
+          <div class="tb-dd-sub" id="upload-gh-info">設定を確認中…</div>
+        </div>
+      </button>
       <div class="tb-dd-sep"></div>
-      <button class="tb-dd-item primary-action" onclick="openFtpModal();closeTbDropdowns()">
-        ⚙️ 現在のサイトのFTP設定
+      <button class="tb-dd-item" onclick="exportAllPages();closeUploadMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <div>
+          <div>全ページ出力（フォルダ選択）</div>
+          <div class="tb-dd-sub">HTMLファイルをローカルに書き出す</div>
+        </div>
       </button>
     </div>
   </div>
-  <!-- GitHub ドロップダウン -->
-  <div class="tb-dropdown" id="gh-dropdown">
-    <button class="tb-btn" id="gh-dd-btn" onclick="toggleTbDropdown('gh')">
-      <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-      <span class="tb-btn-label">GitHub</span>
-      <svg viewBox="0 0 10 6" fill="currentColor" style="width:8px;height:8px;opacity:.5"><path d="M0 0l5 6 5-6z"/></svg>
-    </button>
-    <div class="tb-dropdown-menu" id="gh-dd-menu">
-      <div class="tb-dd-head">サイトを選択してpush</div>
-      <div id="gh-dd-sites"></div>
-      <div class="tb-dd-sep"></div>
-      <button class="tb-dd-item primary-action" onclick="openGithubModal();closeTbDropdowns()">
-        ⚙️ 現在のサイトのGitHub設定
-      </button>
-    </div>
-  </div>
-  <button class="tb-btn" onclick="exportStandaloneHTML()" title="全ページを1つのHTMLファイルとして保存">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="M9 15l3 3 3-3"/></svg>
-    <span class="tb-btn-label">1ファイル保存</span>
-  </button>
-  <button class="tb-btn ok" onclick="exportAllPages()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    <span class="tb-btn-label">全ページ出力</span>
-  </button>
 
   <!-- ハンバーガーボタン（モバイルのみ表示） -->
   <button id="hamburger-btn" class="tb-btn" onclick="toggleMobileMenu()" style="padding:0 8px;" title="メニュー">
@@ -1235,17 +1086,27 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
     新規作成
   </button>
   <div class="mm-sep"></div>
+  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;padding:8px 18px 2px;">名前をつけて保存</div>
+  <button class="mm-item" onclick="saveAsCurrentPage();closeMobileMenu()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    単一HTMLファイル
+  </button>
+  <button class="mm-item" onclick="saveSiteToFolder();closeMobileMenu()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><polyline points="12 11 12 17"/><polyline points="9 14 12 17 15 14"/></svg>
+    全ページをフォルダに出力
+  </button>
   <button class="mm-item" onclick="saveProject();closeMobileMenu()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-    保存 (.json)
+    JSON形式で保存
   </button>
+  <div class="mm-sep"></div>
   <button class="mm-item" onclick="document.getElementById('load-input').click();closeMobileMenu()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-    読込 (.json)
+    JSONを読み込む
   </button>
   <button class="mm-item" onclick="openImportModal();closeMobileMenu()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="12 18 12 12"/><polyline points="9 15 12 18 15 15"/></svg>
-    HTML取込
+    HTML/CSSを取り込む
   </button>
   <div class="mm-sep"></div>
   <button class="mm-item" onclick="togglePreview();closeMobileMenu()">
@@ -1256,22 +1117,28 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
     テンプレート
   </button>
-  <button class="mm-item" onclick="openFtpForSite(pmCurrentId());closeMobileMenu()">
+  <button class="mm-item" onclick="openFtpModal();closeMobileMenu()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    FTP設定（現在のサイト）
+    FTP設定
   </button>
-  <button class="mm-item" onclick="pushGhForSite(pmCurrentId());closeMobileMenu()">
+  <button class="mm-item" onclick="openGithubModal();closeMobileMenu()">
     <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px;flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-    GitHub push（現在のサイト）
+    GitHub
   </button>
   <div class="mm-sep"></div>
-  <button class="mm-item" onclick="exportStandaloneHTML();closeMobileMenu()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="M9 15l3 3 3-3"/></svg>
-    1ファイル保存
+  <div class="mm-sep"></div>
+  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;padding:8px 18px 2px;">アップロード</div>
+  <button class="mm-item" onclick="quickUploadFtp();closeMobileMenu()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    FTP / SFTP でアップロード
   </button>
-  <button class="mm-item ok" onclick="exportAllPages();closeMobileMenu()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    全ページ出力
+  <button class="mm-item" onclick="quickUploadGithub();closeMobileMenu()">
+    <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px;flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    GitHub へ push
+  </button>
+  <button class="mm-item" onclick="exportAllPages();closeMobileMenu()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+    全ページ出力（フォルダ選択）
   </button>
 </div>
 
@@ -1284,17 +1151,8 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
 
   <!-- SIDEBAR -->
   <div id="sidebar">
-    <!-- サイト一覧セクション -->
-    <div id="site-list-section">
-      <div class="sb-head" style="padding:8px 10px 6px;">
-        <span class="sb-label">サイト一覧</span>
-        <button class="sb-add" onclick="newProjectFromModal()" title="新しいサイトを作成" style="width:20px;height:20px;font-size:13px;">+</button>
-      </div>
-      <div id="site-list-items"></div>
-    </div>
-    <!-- ページツリーセクション -->
     <div class="sb-head">
-      <span class="sb-label" id="pages-section-label">ページ一覧</span>
+      <span class="sb-label">ページ一覧</span>
       <div style="display:flex;align-items:center;gap:6px;">
         <button class="sb-add" onclick="addPage()" title="トップレベルにページ追加">+</button>
         <button id="sb-close-btn" onclick="closeSidebar()" title="閉じる"
@@ -1308,54 +1166,95 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
   <div id="editor-area">
     <!-- TOOLBAR -->
     <div id="toolbar">
+      <!-- エディタモード切替（左端） -->
+      <div style="display:flex;align-items:center;gap:2px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:3px;margin-right:6px;">
+        <button id="mode-wysiwyg" onclick="setEditorMode('wysiwyg')" title="プレビューデザインで編集"
+          style="height:26px;padding:0 10px;border:none;border-radius:5px;font-size:11.5px;font-family:inherit;cursor:pointer;background:var(--accent);color:#fff;font-weight:600;transition:all .12s;">
+          WYSIWYG
+        </button>
+        <button id="mode-normal" onclick="setEditorMode('normal')" title="通常テキスト編集"
+          style="height:26px;padding:0 10px;border:none;border-radius:5px;font-size:11.5px;font-family:inherit;cursor:pointer;background:none;color:var(--text2);transition:all .12s;">
+          通常
+        </button>
+        <button id="mode-html" onclick="setEditorMode('html')" title="HTMLを直接編集"
+          style="height:26px;padding:0 10px;border:none;border-radius:5px;font-size:11.5px;font-family:'DM Mono',monospace;cursor:pointer;background:none;color:var(--text2);transition:all .12s;">
+          HTML
+        </button>
+      </div>
       <div class="tg">
         <select class="te" id="fmt-sel" onchange="applyFmt(this.value)">
           <option value="p">本文</option>
+          <option value="h1">見出し H1</option>
           <option value="h2">見出し H2</option>
           <option value="h3">見出し H3</option>
           <option value="h4">見出し H4</option>
+          <option value="h5">見出し H5</option>
+          <option value="h6">見出し H6</option>
           <option value="blockquote">引用</option>
         </select>
       </div>
       <div class="tg">
-        <button class="te" onclick="exec('bold')" title="太字"><b>B</b></button>
-        <button class="te" onclick="exec('italic')" title="斜体"><i style="font-style:italic">I</i></button>
-        <button class="te" onclick="exec('underline')" title="下線"><u>U</u></button>
-        <button class="te" onclick="exec('strikeThrough')" title="取消線"><s>S</s></button>
+        <button class="te" onclick="exec('bold')" title="太字"><b>B</b><span class="te-label">太字</span></button>
+        <button class="te" onclick="exec('italic')" title="斜体"><i style="font-style:italic">I</i><span class="te-label">斜体</span></button>
+        <button class="te" onclick="exec('underline')" title="下線"><u>U</u><span class="te-label">下線</span></button>
+        <button class="te" onclick="exec('strikeThrough')" title="取消線"><s>S</s><span class="te-label">打消</span></button>
       </div>
       <div class="tg">
         <button class="te" onclick="exec('justifyLeft')" title="左揃え">
           <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2" rx="1"/><rect x="1" y="6" width="9" height="2" rx="1"/><rect x="1" y="10" width="14" height="2" rx="1"/><rect x="1" y="14" width="9" height="2" rx="1"/></svg>
+          <span class="te-label">左</span>
         </button>
         <button class="te" onclick="exec('justifyCenter')" title="中央揃え">
           <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2" rx="1"/><rect x="3" y="6" width="10" height="2" rx="1"/><rect x="1" y="10" width="14" height="2" rx="1"/><rect x="3" y="14" width="10" height="2" rx="1"/></svg>
+          <span class="te-label">中央</span>
         </button>
         <button class="te" onclick="exec('justifyRight')" title="右揃え">
           <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2" rx="1"/><rect x="6" y="6" width="9" height="2" rx="1"/><rect x="1" y="10" width="14" height="2" rx="1"/><rect x="6" y="14" width="9" height="2" rx="1"/></svg>
+          <span class="te-label">右</span>
         </button>
       </div>
       <div class="tg">
         <button class="te" onclick="exec('insertUnorderedList')" title="箇条書き">
           <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="2.5" cy="4" r="1.5"/><rect x="6" y="3" width="9" height="2" rx="1"/><circle cx="2.5" cy="8" r="1.5"/><rect x="6" y="7" width="9" height="2" rx="1"/><circle cx="2.5" cy="12" r="1.5"/><rect x="6" y="11" width="9" height="2" rx="1"/></svg>
+          <span class="te-label">箇条</span>
         </button>
         <button class="te" onclick="exec('insertOrderedList')" title="番号リスト">
           <svg viewBox="0 0 16 16" fill="currentColor"><text x="0" y="12" font-size="11" fill="currentColor">1.</text><rect x="7" y="3" width="8" height="2" rx="1"/><rect x="7" y="7" width="8" height="2" rx="1"/><rect x="7" y="11" width="8" height="2" rx="1"/></svg>
+          <span class="te-label">番号</span>
         </button>
       </div>
       <div class="tg">
         <button class="te" onclick="insertLink()" title="リンク挿入">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span class="te-label">リンク</span>
         </button>
-        <input type="color" class="te" id="fc" value="#5b8df6" onchange="exec('foreColor',this.value)" title="文字色">
+        <label class="te" title="文字色" style="cursor:pointer;flex-direction:column;gap:1px;">
+          <input type="color" id="fc" value="#5b8df6" onchange="exec('foreColor',this.value)" style="width:18px;height:14px;border:none;padding:0;background:none;cursor:pointer;">
+          <span class="te-label" style="margin:0;">文字色</span>
+        </label>
       </div>
       <div class="tg">
-        <button class="te" onclick="insertImg()" title="画像URL挿入">
+        <button class="te" onclick="insertImgMenu(event)" title="画像を挿入">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span class="te-label">画像</span>
         </button>
         <button class="te" onclick="exec('removeFormat')" title="書式をクリア">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/><line x1="3" y1="21" x2="21" y2="3"/></svg>
+          <span class="te-label">書式解除</span>
         </button>
       </div>
+      <!-- 画像挿入メニュー -->
+      <div id="img-menu" style="display:none;position:absolute;z-index:600;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:6px 0;box-shadow:0 8px 24px rgba(0,0,0,.4);min-width:180px;">
+        <button onclick="insertImgFromUrl();closeImgMenu()" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 14px;background:none;border:none;font-family:inherit;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='none'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          URLで挿入
+        </button>
+        <button onclick="document.getElementById('img-file-input').click();closeImgMenu()" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 14px;background:none;border:none;font-family:inherit;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='none'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          ファイルから挿入
+        </button>
+      </div>
+      <input id="img-file-input" type="file" accept="image/*" style="display:none" onchange="insertImgFromFile(this)">
       <div class="tg">
         <button class="te on" id="parts-toggle" onclick="toggleParts()" style="padding:0 10px;font-size:11px;gap:4px;min-width:auto;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -1391,8 +1290,20 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
     <div id="ptitle-wrap">
       <input id="ptitle" type="text" placeholder="ページタイトルを入力..." oninput="onTitleChange()">
     </div>
-    <div id="editor-scroll">
+
+    <!-- WYSIWYGプレビュー編集iframe -->
+    <iframe id="wysiwyg-frame" style="flex:1;width:100%;border:none;display:none;" frameborder="0"></iframe>
+
+    <!-- 通常エディタ -->
+    <div id="editor-scroll" style="display:none;">
       <div id="editor" contenteditable="true" spellcheck="false"></div>
+    </div>
+
+    <!-- HTML直接編集 -->
+    <div id="html-editor-wrap" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+      <textarea id="html-editor"
+        style="flex:1;width:100%;background:var(--bg);color:var(--ok);font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.7;padding:16px 20px;border:none;outline:none;resize:none;tab-size:2;"
+        spellcheck="false" placeholder="HTMLを入力..." oninput="onHtmlEditorInput()"></textarea>
     </div>
 
     <!-- EMPTY STATE -->
@@ -1425,34 +1336,6 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
 
 <!-- TOAST -->
 <div id="toast"></div>
-
-<!-- PAGE PREVIEW POPUP -->
-<div id="page-preview-popup">
-  <div class="pp-title" id="pp-title">ページタイトル</div>
-  <div class="pp-frame-wrap">
-    <iframe id="pp-iframe" sandbox="allow-same-origin"></iframe>
-  </div>
-</div>
-
-<!-- ===== PROJECT MANAGER MODAL ===== -->
-<div id="project-modal" class="modal-mask" style="display:none">
-  <div class="modal" style="width:480px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <h3 style="margin:0;">📂 プロジェクト管理</h3>
-      <button onclick="closeProjectModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;line-height:1;">×</button>
-    </div>
-    <div id="proj-list-wrap" style="margin-bottom:14px;max-height:340px;overflow-y:auto;"></div>
-    <div class="modal-sep"></div>
-    <div style="display:flex;gap:8px;">
-      <button class="mok" style="flex:1;padding:9px;border-radius:7px;border:none;background:var(--accent);color:#fff;font-weight:600;font-size:13px;font-family:inherit;cursor:pointer;" onclick="newProjectFromModal()">
-        ＋ 新規サイトを作成
-      </button>
-      <button style="padding:9px 14px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text2);font-size:12.5px;font-family:inherit;cursor:pointer;" onclick="closeProjectModal()">
-        閉じる
-      </button>
-    </div>
-  </div>
-</div>
 
 <!-- ===== MODALS ===== -->
 
@@ -1543,18 +1426,6 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
         <div class="tpl-card" data-tpl="port" onclick="wizSelectTpl('port',this)">
           <div class="tpl-preview tpl-port"><div class="tpl-prev-header">Portfolio</div><div class="tpl-prev-nav"></div><div class="tpl-prev-body"></div></div>
           <div class="tpl-name">ポートフォリオ</div><div class="tpl-desc">黒背景・作品展示</div>
-        </div>
-        <div class="tpl-card" data-tpl="yahoo" onclick="wizSelectTpl('yahoo',this)">
-          <div class="tpl-preview tpl-yahoo" style="position:relative;overflow:hidden;"><div class="tpl-prev-header" style="font-weight:700;">Yahoo! Dir</div><div class="tpl-prev-nav" style="position:absolute;background:#600060;color:#ffcc00;font-size:6px;width:100%;height:12px;top:16px;left:0;display:flex;align-items:center;padding:0 3px;">▪カテゴリ▪ニュース</div><div style="position:absolute;top:30px;left:4px;right:4px;bottom:4px;background:#fff;border:1px solid #ccc;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px;border-radius:2px;"><div style="background:#f8f0ff;border:1px solid #c8a;font-size:6px;padding:1px 2px;color:#400040;">カテゴリ▸</div><div style="background:#f8f0ff;border:1px solid #c8a;font-size:6px;padding:1px 2px;color:#400040;">カテゴリ▸</div><div style="background:#f8f0ff;border:1px solid #c8a;font-size:6px;padding:1px 2px;color:#400040;">カテゴリ▸</div><div style="background:#f8f0ff;border:1px solid #c8a;font-size:6px;padding:1px 2px;color:#400040;">カテゴリ▸</div></div></div>
-          <div class="tpl-name">Yahooディレクトリ</div><div class="tpl-desc">カテゴリ型・リンク集</div>
-        </div>
-        <div class="tpl-card" data-tpl="2col" onclick="wizSelectTpl('2col',this)">
-          <div class="tpl-preview tpl-2col"><div class="tpl-prev-header">2 Column</div><div class="tpl-prev-nav">nav</div><div class="tpl-prev-body"></div></div>
-          <div class="tpl-name">2カラム</div><div class="tpl-desc">左ナビ＋メイン・汎用</div>
-        </div>
-        <div class="tpl-card" data-tpl="3col" onclick="wizSelectTpl('3col',this)">
-          <div class="tpl-preview tpl-3col" style="position:relative;overflow:hidden;"><div class="tpl-prev-header">3 Column</div><div class="tpl-prev-nav">nav</div><div class="tpl-prev-body"></div><div style="position:absolute;top:20px;right:4px;width:20px;bottom:4px;background:#f0f2f5;border:1px solid #ddd;border-radius:2px;font-size:6px;color:#666;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;">side</div></div>
-          <div class="tpl-name">3カラム</div><div class="tpl-desc">左ナビ＋メイン＋右サイド</div>
         </div>
       </div>
     </div>
@@ -1856,6 +1727,22 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
   </div>
 </div>
 
+<!-- ===== CONFIRM DIALOG ===== -->
+<div id="confirm-dialog" class="modal-mask" style="display:none;align-items:center;justify-content:center;">
+  <div class="modal" style="width:380px;padding:28px 28px 22px;">
+    <div id="confirm-title" style="font-size:15px;font-weight:700;margin-bottom:10px;color:var(--text);"></div>
+    <div id="confirm-msg" style="font-size:13.5px;color:var(--text2);line-height:1.75;margin-bottom:18px;"></div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text3);font-weight:normal;letter-spacing:0;cursor:pointer;margin-bottom:20px;">
+      <input type="checkbox" id="confirm-skip" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;">
+      次回から表示しない
+    </label>
+    <div class="ma">
+      <button id="confirm-cancel-btn" onclick="resolveConfirm(false)" style="min-width:90px;">キャンセル</button>
+      <button id="confirm-ok-btn" class="mok" onclick="resolveConfirm(true)" style="min-width:90px;">削除</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== SITE SETTINGS ===== -->
 <div id="site-settings-modal" class="modal-mask" style="display:none">
   <div class="modal" style="width:500px;">
@@ -1956,18 +1843,6 @@ input[type=color].te{padding:2px;width:28px;cursor:pointer;}
         <div class="tpl-preview tpl-port"><div class="tpl-prev-header">Portfolio</div><div class="tpl-prev-nav"></div><div class="tpl-prev-body"></div></div>
         <div class="tpl-name">ポートフォリオ</div><div class="tpl-desc">黒背景・作品展示</div>
       </div>
-      <div class="tpl-card" data-tpl="yahoo" onclick="selectBuiltinTpl('yahoo',this)">
-        <div class="tpl-preview tpl-yahoo" style="position:relative;overflow:hidden;"><div class="tpl-prev-header" style="font-weight:700;">Yahoo! Directory</div><div class="tpl-prev-nav" style="position:absolute;">▪ カテゴリ ▪ ニュース ▪ 検索</div><div class="tpl-prev-body" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:3px;background:#fff;border:1px solid #ccc;top:36px;left:4px;right:4px;bottom:4px;position:absolute;border-radius:2px;"><div style="background:#f8f0ff;border:1px solid #ccc;border-radius:2px;font-size:7px;padding:2px;color:#400040;">カテゴリ▸</div><div style="background:#f8f0ff;border:1px solid #ccc;border-radius:2px;font-size:7px;padding:2px;color:#400040;">カテゴリ▸</div><div style="background:#f8f0ff;border:1px solid #ccc;border-radius:2px;font-size:7px;padding:2px;color:#400040;">カテゴリ▸</div><div style="background:#f8f0ff;border:1px solid #ccc;border-radius:2px;font-size:7px;padding:2px;color:#400040;">カテゴリ▸</div></div></div>
-        <div class="tpl-name">Yahooディレクトリ</div><div class="tpl-desc">カテゴリ型・リンク集</div>
-      </div>
-      <div class="tpl-card" data-tpl="2col" onclick="selectBuiltinTpl('2col',this)">
-        <div class="tpl-preview tpl-2col"><div class="tpl-prev-header">2 Column</div><div class="tpl-prev-nav">nav</div><div class="tpl-prev-body"></div></div>
-        <div class="tpl-name">2カラム</div><div class="tpl-desc">左ナビ＋メイン・汎用</div>
-      </div>
-      <div class="tpl-card" data-tpl="3col" onclick="selectBuiltinTpl('3col',this)">
-        <div class="tpl-preview tpl-3col" style="position:relative;overflow:hidden;"><div class="tpl-prev-header">3 Column</div><div class="tpl-prev-nav">nav</div><div class="tpl-prev-body"></div><div style="position:absolute;top:20px;right:4px;width:20px;bottom:4px;background:#f0f2f5;border:1px solid #ddd;border-radius:2px;font-size:6px;color:#666;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;">side</div></div>
-        <div class="tpl-name">3カラム</div><div class="tpl-desc">左ナビ＋メイン＋右サイド</div>
-      </div>
       <div class="tpl-card" id="custom-tpl-card" onclick="document.getElementById('tpl-upload').click()" style="grid-column:span 1;">
         <div class="tpl-preview tpl-upload-preview"><div style="font-size:22px;margin-bottom:4px;">📂</div><div style="font-size:10px;color:#8892b0;">HTMLをアップロード</div></div>
         <div class="tpl-name">カスタム</div><div class="tpl-desc" id="custom-tpl-filename">HTMLファイルを選択</div>
@@ -2034,7 +1909,6 @@ let rpCurrent = 'prev';
    INIT
 ════════════════════════════════ */
 function init() {
-  // ─ localStorage からstateを復元 ─
   const ls = localStorage.getItem('cms_state_v3');
   if (ls) {
     try { state = JSON.parse(ls); } catch(e) {}
@@ -2052,41 +1926,15 @@ function init() {
       { id: uid(), parentId: rootId, title: 'サービス紹介', content: '<h2>サービス紹介</h2><p>サービスの内容を入力してください。</p>', order: 0, collapsed: false },
     ];
   }
-
-  // ─ プロジェクト管理の初期化 ─
-  // 既存データをプロジェクトとして登録（マイグレーション）
-  const projects = pmLoad();
-  let curId = pmCurrentId();
-  if (!curId || !projects[curId]) {
-    // 初回 or 孤立: 現在のstateをプロジェクト0として登録
-    curId = uid();
-    pmSetCurrent(curId);
-    projects[curId] = {
-      id: curId,
-      title: state.siteTitle || 'マイサイト',
-      updatedAt: Date.now(),
-      state: JSON.parse(JSON.stringify(state)),
-      tpl: tplState.current || 'clean',
-    };
-    pmSave(projects);
-  } else {
-    // 既存プロジェクトをロード（最後に編集していたもの）
-    const proj = projects[curId];
-    if (proj && proj.state) {
-      state = proj.state;
-      tplState.current = proj.tpl || 'clean';
-      (state.pages||[]).forEach(p => {
-        if (!('parentId' in p)) p.parentId = null;
-        if (!('order' in p)) p.order = 0;
-        if (!('collapsed' in p)) p.collapsed = false;
-      });
-    }
-  }
-
   document.getElementById('site-title-display').textContent = state.siteTitle || 'マイサイト';
-  updateProjBar();
   renderList();
+  // エディタモードボタンの初期状態を反映
+  setEditorMode(editorMode);
   openPage(state.pages[0].id);
+  // ウィザードが初回なら表示
+  if (!localStorage.getItem('cms_launched')) {
+    // 初回起動ウィザードは表示しない（既存データがある場合）
+  }
 }
 
 function uid() {
@@ -2228,9 +2076,6 @@ function renderNode(container, page, depth) {
   row.appendChild(acts);
 
   row.addEventListener('click', () => openPage(page.id));
-  // プレビューポップアップ
-  row.addEventListener('mouseenter', (e) => showPagePreview(page.id, row));
-  row.addEventListener('mouseleave', () => hidePagePreview());
   // D&D初期化
   initDragDrop(row, page.id);
   wrapper.appendChild(row);
@@ -2266,6 +2111,103 @@ function renderBreadcrumb(id) {
 /* ════════════════════════════════
    PAGE OPEN / SAVE
 ════════════════════════════════ */
+/* ════════════════════════════════
+   WYSIWYG FRAME（プレビューデザインで直接編集）
+════════════════════════════════ */
+let wysiwygReady = false;
+
+function getWysiwygDoc() {
+  const frame = document.getElementById('wysiwyg-frame');
+  return frame ? frame.contentDocument || frame.contentWindow?.document : null;
+}
+
+function getEditorContent() {
+  const doc = getWysiwygDoc();
+  if (doc) {
+    const editable = doc.getElementById('wysiwyg-editable');
+    return editable ? editable.innerHTML : '';
+  }
+  return document.getElementById('editor').innerHTML;
+}
+
+function setEditorContent(html) {
+  const doc = getWysiwygDoc();
+  if (doc) {
+    const editable = doc.getElementById('wysiwyg-editable');
+    if (editable) { editable.innerHTML = html; return; }
+  }
+  document.getElementById('editor').innerHTML = html;
+}
+
+function initWysiwygFrame(page) {
+  if (!currentId) return;
+  const fnMap = buildFilenameMap();
+  const fullHtml = buildHTML({...page}, state.pages, fnMap);
+
+  // 編集可能エリアを特定するためのマーカーをbodyコンテンツに付与
+  // buildHTMLの出力からbody内のメインコンテンツ部分をcontenteditable化
+  const modifiedHtml = fullHtml.replace(
+    /(<body[^>]*>)/i,
+    '$1<style>#wysiwyg-editable{outline:2px dashed rgba(91,141,246,.4);outline-offset:4px;border-radius:4px;min-height:200px;transition:outline-color .15s;}#wysiwyg-editable:focus{outline-color:rgba(91,141,246,.8);}#wysiwyg-editable *{cursor:text;}</style>'
+  ).replace(
+    /(<!--CONTENT_START-->|<main[^>]*>|<article[^>]*>|<div[^>]*class="[^"]*(?:content|main|entry|post|article)[^"]*"[^>]*>|<div[^>]*id="(?:content|main|entry)[^"]*"[^>]*>)/i,
+    (match) => match.replace('>', ' id="wysiwyg-outer">')
+  );
+
+  // iframeに書き込む
+  const frame = document.getElementById('wysiwyg-frame');
+  frame.srcdoc = modifiedHtml;
+  frame.style.display = 'flex';
+  document.getElementById('editor-scroll').style.display = 'none';
+
+  wysiwygReady = false;
+  frame.onload = () => {
+    const doc = frame.contentDocument || frame.contentWindow?.document;
+    if (!doc) return;
+
+    // メインコンテンツエリアを探してcontenteditable化
+    // 候補: main, article, .content, #content, h1の親など
+    let editable = doc.querySelector('main') ||
+                   doc.querySelector('article') ||
+                   doc.querySelector('[class*="content"]') ||
+                   doc.querySelector('[id*="content"]') ||
+                   doc.querySelector('.main-col') ||
+                   doc.querySelector('.main-content') ||
+                   doc.querySelector('#main') ||
+                   doc.body;
+
+    // bodyそのままはナビなども含むので、もう少し絞る
+    // h1を含む要素を優先
+    const h1 = doc.querySelector('h1');
+    if (h1 && h1.parentElement && h1.parentElement !== doc.body) {
+      editable = h1.parentElement;
+    }
+
+    editable.id = 'wysiwyg-editable';
+    editable.contentEditable = 'true';
+    editable.spellcheck = false;
+
+    // リンク・ナビ等はクリックを無効化（編集中はページ遷移しない）
+    doc.querySelectorAll('a').forEach(a => {
+      if (!editable.contains(a)) {
+        a.addEventListener('click', e => e.preventDefault());
+      }
+    });
+
+    // 入力イベントをメインウィンドウに伝播
+    let saveTimer;
+    editable.addEventListener('input', () => {
+      // editorのinnerHTMLも同期（saveCurrent用）
+      document.getElementById('editor').innerHTML = editable.innerHTML;
+      updateRP();
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => { saveCurrent(); lsSave(); }, 800);
+    });
+
+    wysiwygReady = true;
+  };
+}
+
 function openPage(id) {
   saveCurrent();
   currentId = id;
@@ -2276,7 +2218,24 @@ function openPage(id) {
   renderList();
   renderBreadcrumb(id);
   updateRP();
-  // モバイル: ページ選択後にサイドバーを閉じる
+
+  // エディタモードに応じて表示切替
+  const frame    = document.getElementById('wysiwyg-frame');
+  const scroll   = document.getElementById('editor-scroll');
+  const htmlWrap = document.getElementById('html-editor-wrap');
+  frame.style.display    = editorMode === 'wysiwyg' ? 'flex' : 'none';
+  scroll.style.display   = editorMode === 'normal'  ? '' : 'none';
+  htmlWrap.style.display = editorMode === 'html'    ? 'flex' : 'none';
+
+  if (editorMode === 'wysiwyg') {
+    initWysiwygFrame(p);
+  } else if (editorMode === 'html') {
+    document.getElementById('html-editor').value = p.content || '';
+    wysiwygReady = false;
+  } else {
+    wysiwygReady = false;
+  }
+
   if (window.innerWidth < 768) closeSidebar();
   setTimeout(() => {
     const active = document.querySelector('.pi.active');
@@ -2289,6 +2248,25 @@ function saveCurrent() {
   const p = state.pages.find(p => p.id === currentId);
   if (!p) return;
   p.title = document.getElementById('ptitle').value || '無題';
+
+  if (editorMode === 'html') {
+    // HTMLエディタから直接取得
+    p.content = document.getElementById('html-editor').value;
+    document.getElementById('editor').innerHTML = p.content;
+    return;
+  }
+  if (editorMode === 'wysiwyg') {
+    // WYSIWYGフレームから取得
+    const doc = getWysiwygDoc();
+    if (doc && wysiwygReady) {
+      const editable = doc.getElementById('wysiwyg-editable');
+      if (editable) {
+        p.content = editable.innerHTML;
+        document.getElementById('editor').innerHTML = editable.innerHTML;
+        return;
+      }
+    }
+  }
   p.content = document.getElementById('editor').innerHTML;
 }
 
@@ -2322,16 +2300,50 @@ function addSubPage(parentId) {
 }
 
 /* ════════════════════════════════
+   CUSTOM CONFIRM DIALOG
+════════════════════════════════ */
+let _confirmResolve = null;
+const CONFIRM_SKIP_KEY = 'cms_skip_delete_confirm';
+
+function showConfirm(title, msg, okLabel = '削除', dangerOk = true) {
+  // 「次回から表示しない」がチェック済みなら即OK
+  if (localStorage.getItem(CONFIRM_SKIP_KEY) === '1') return Promise.resolve(true);
+
+  return new Promise(resolve => {
+    _confirmResolve = resolve;
+    document.getElementById('confirm-title').textContent = title;
+    document.getElementById('confirm-msg').textContent = msg;
+    document.getElementById('confirm-skip').checked = false;
+    const okBtn = document.getElementById('confirm-ok-btn');
+    okBtn.textContent = okLabel;
+    okBtn.style.background  = dangerOk ? 'var(--danger)' : 'var(--accent)';
+    okBtn.style.borderColor = dangerOk ? 'var(--danger)' : 'var(--accent)';
+    document.getElementById('confirm-dialog').style.display = 'flex';
+  });
+}
+
+function resolveConfirm(result) {
+  document.getElementById('confirm-dialog').style.display = 'none';
+  if (result && document.getElementById('confirm-skip').checked) {
+    localStorage.setItem(CONFIRM_SKIP_KEY, '1');
+  }
+  if (_confirmResolve) { _confirmResolve(result); _confirmResolve = null; }
+}
+
+/* ════════════════════════════════
    DELETE PAGE
 ════════════════════════════════ */
-function delPage(id) {
+async function delPage(id) {
   const page = state.pages.find(p => p.id === id);
   if (!page) return;
   const kidCount = descendants(id).length;
+  const title = `「${page.title || '無題'}」を削除`;
   const msg = kidCount > 0
-    ? `「${page.title||'無題'}」とその配下 ${kidCount} ページをすべて削除しますか？`
-    : `「${page.title||'無題'}」を削除しますか？`;
-  if (!confirm(msg)) return;
+    ? `「${page.title || '無題'}」とその配下 ${kidCount} ページをすべて削除します。この操作は取り消せません。`
+    : `「${page.title || '無題'}」を削除します。この操作は取り消せません。`;
+
+  const ok = await showConfirm(title, msg, '削除する', true);
+  if (!ok) return;
 
   const toDelete = new Set([id, ...descendants(id)]);
   state.pages = state.pages.filter(p => !toDelete.has(p.id));
@@ -2355,6 +2367,12 @@ function onTitleChange() {
     // サイドバーのタイトルをリアルタイム更新
     const nameEl = document.querySelector(`.pi[data-id="${currentId}"] .pi-name`);
     if (nameEl) nameEl.textContent = p.title;
+    // iframe内のh1も更新
+    if (wysiwygReady) {
+      const doc = getWysiwygDoc();
+      const h1 = doc?.querySelector('#wysiwyg-editable h1') || doc?.querySelector('h1');
+      if (h1) h1.textContent = p.title;
+    }
   }
   lsSave();
 }
@@ -2362,35 +2380,103 @@ function onTitleChange() {
 /* ════════════════════════════════
    TOOLBAR
 ════════════════════════════════ */
+function getEditDoc() {
+  const doc = getWysiwygDoc();
+  if (doc && wysiwygReady && doc.getElementById('wysiwyg-editable')) return doc;
+  return document;
+}
+function getEditTarget() {
+  const doc = getWysiwygDoc();
+  if (doc && wysiwygReady) {
+    const el = doc.getElementById('wysiwyg-editable');
+    if (el) return el;
+  }
+  return document.getElementById('editor');
+}
+function syncEditorFromFrame() {
+  const target = getEditTarget();
+  if (target !== document.getElementById('editor')) {
+    document.getElementById('editor').innerHTML = target.innerHTML;
+  }
+}
+
 function exec(cmd, val) {
-  document.getElementById('editor').focus();
-  document.execCommand(cmd, false, val || null);
+  const editDoc = getEditDoc();
+  getEditTarget().focus();
+  editDoc.execCommand(cmd, false, val || null);
+  syncEditorFromFrame();
+  if (cmd === 'foreColor') setTimeout(protectLinks, 10);
 }
 
 function applyFmt(val) {
-  document.getElementById('editor').focus();
-  document.execCommand('formatBlock', false, val);
+  const editDoc = getEditDoc();
+  getEditTarget().focus();
+  editDoc.execCommand('formatBlock', false, val);
+  syncEditorFromFrame();
   setTimeout(() => { document.getElementById('fmt-sel').value = 'p'; }, 0);
 }
 
 function insertLink() {
-  const sel = window.getSelection();
+  const editDoc = getEditDoc();
+  const iframeWin = getWysiwygDoc() ? (document.getElementById('wysiwyg-frame').contentWindow) : window;
+  const sel = wysiwygReady ? (iframeWin.getSelection?.() || window.getSelection()) : window.getSelection();
   const txt = sel && sel.toString();
   const url = prompt('リンク先URLを入力:', 'https://');
   if (!url) return;
   if (txt) {
-    exec('createLink', url);
+    getEditTarget().focus();
+    editDoc.execCommand('createLink', false, url);
   } else {
     const label = prompt('リンクのテキスト:', url) || url;
-    document.getElementById('editor').focus();
-    document.execCommand('insertHTML', false, `<a href="${esc(url)}">${esc(label)}</a>`);
+    getEditTarget().focus();
+    editDoc.execCommand('insertHTML', false, `<a href="${esc(url)}">${esc(label)}</a>`);
   }
+  syncEditorFromFrame();
 }
 
-function insertImg() {
-  const url = prompt('画像URLを入力:');
+function insertImgMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('img-menu');
+  const rect = e.currentTarget.getBoundingClientRect();
+  menu.style.display = 'block';
+  menu.style.top  = (rect.bottom + 4) + 'px';
+  menu.style.left = rect.left + 'px';
+}
+function closeImgMenu() {
+  document.getElementById('img-menu').style.display = 'none';
+}
+document.addEventListener('click', () => closeImgMenu());
+
+function insertImgFromUrl() {
+  const url = prompt('画像URLを入力:', 'https://');
   if (!url) return;
-  exec('insertHTML', `<img src="${esc(url)}" style="max-width:100%;border-radius:8px;margin:8px 0;" alt="">`);
+  const editDoc = getEditDoc();
+  getEditTarget().focus();
+  editDoc.execCommand('insertHTML', false,
+    `<img src="${esc(url)}" style="max-width:100%;border-radius:8px;margin:8px 0;" alt="">`);
+  syncEditorFromFrame();
+}
+
+function insertImgFromFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    toast('⚠️ 5MB以上の画像は挿入できません');
+    input.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const base64 = e.target.result;
+    const editDoc = getEditDoc();
+    getEditTarget().focus();
+    editDoc.execCommand('insertHTML', false,
+      `<img src="${base64}" style="max-width:100%;border-radius:8px;margin:8px 0;" alt="${esc(file.name)}">`);
+    syncEditorFromFrame();
+    toast(`✓ ${file.name} を挿入しました`);
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
 }
 
 /* ════════════════════════════════
@@ -2416,8 +2502,10 @@ const PARTS = {
 
 function ins(type) {
   if (!PARTS[type]) return;
-  document.getElementById('editor').focus();
-  document.execCommand('insertHTML', false, PARTS[type]);
+  const editDoc = getEditDoc();
+  getEditTarget().focus();
+  editDoc.execCommand('insertHTML', false, PARTS[type]);
+  syncEditorFromFrame();
   updateRP();
 }
 
@@ -2501,8 +2589,10 @@ function doInsert(type) {
     });
   }
   html += '<p><br></p>';
-  document.getElementById('editor').focus();
-  document.execCommand('insertHTML', false, html);
+  const editDoc = getEditDoc();
+  getEditTarget().focus();
+  editDoc.execCommand('insertHTML', false, html);
+  syncEditorFromFrame();
   closeModal(type);
   updateRP();
 }
@@ -2712,15 +2802,48 @@ function getPageFilename(page) {
 function filenameBase(page) {
   const rootPages = roots();
   if (page.parentId === null && rootPages[0]?.id === page.id) return 'index';
-  let base = (page.title || 'page')
+
+  const title = page.title || '';
+
+  // 英数字・ハイフン・アンダースコアのみのタイトルはそのまま使用
+  const ascii = title
     .toLowerCase()
     .replace(/[\s\u3000]+/g, '-')
     .replace(/[^\w\-]/g, '')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
-  if (!base || base.length < 1) base = page.id;
-  if (base.length > 40) base = base.slice(0, 40);
-  return base;
+
+  // 英字が3文字以上あれば使う
+  if (ascii && ascii.replace(/-/g,'').length >= 3) {
+    return ascii.slice(0, 40);
+  }
+
+  // 日本語タイトルの場合はページ番号ベースで生成
+  // 親階層を使ってフォルダ構造っぽい名前にする
+  const parent = page.parentId ? state.pages.find(p => p.id === page.parentId) : null;
+  const siblings = state.pages.filter(p => p.parentId === page.parentId);
+  const idx = siblings.findIndex(p => p.id === page.id) + 1;
+
+  if (parent) {
+    // 親のascii名を取得
+    const parentAscii = (parent.title || '')
+      .toLowerCase()
+      .replace(/[\s\u3000]+/g, '-')
+      .replace(/[^\w\-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+    if (parentAscii && parentAscii.replace(/-/g,'').length >= 2) {
+      return `${parentAscii.slice(0,20)}-${idx}`;
+    }
+    // 親もASCIIがない場合
+    const parentSiblings = state.pages.filter(p => p.parentId === parent.parentId);
+    const parentIdx = parentSiblings.findIndex(p => p.id === parent.id) + 1;
+    return `page${parentIdx}-${idx}`;
+  }
+
+  // ルート直下
+  const rootIdx = rootPages.findIndex(p => p.id === page.id) + 1;
+  return `page${rootIdx}`;
 }
 
 // 全ページのファイル名マップをキャッシュして使う（同一出力内で一貫性保証）
@@ -2790,9 +2913,6 @@ function buildHTML(page, allPages, fnMap) {
   if (tpl === 'corp') return buildCorpTpl(title, siteTitle, body, navSidebar, breadcrumb, partsCss, metaDesc, gaCode);
   if (tpl === 'doc')  return buildDocTpl(title, siteTitle, body, navSidebar, breadcrumb, partsCss, metaDesc, gaCode);
   if (tpl === 'port') return buildPortTpl(title, siteTitle, body, navTop, breadcrumb, partsCss, metaDesc, gaCode);
-  if (tpl === 'yahoo') return buildYahooDirTpl(title, siteTitle, body, navSidebar, navTop, breadcrumb, partsCss, metaDesc, gaCode);
-  if (tpl === '2col')  return build2ColTpl(title, siteTitle, body, navSidebar, breadcrumb, partsCss, metaDesc, gaCode);
-  if (tpl === '3col')  return build3ColTpl(title, siteTitle, body, navSidebar, breadcrumb, partsCss, metaDesc, gaCode);
   return buildCleanTpl(title, siteTitle, body, navSidebar, breadcrumb, partsCss, metaDesc, gaCode);
 }
 
@@ -3144,344 +3264,6 @@ ${partsCss.replace(/#5b8df6/g,'#f0e68c').replace(/#8b5cf6/g,'#d4a017').replace(/
 </body></html>`;
 }
 
-/* ── Yahooディレクトリ型テンプレート ── */
-function buildYahooDirTpl(title, siteTitle, body, navSidebar, navTop, bc, partsCss, metaDesc='', gaCode='') {
-  return `<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>${esc(title)} | ${esc(siteTitle)}</title>${metaDesc}${gaCode}
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans JP','MS PGothic',sans-serif;font-size:13px;line-height:1.6;color:#000;background:#fff;}
-a{color:#00c;text-decoration:none;}a:hover{text-decoration:underline;color:#c00;}
-/* ヘッダー */
-.y-header{background:linear-gradient(180deg,#500050 0%,#300030 100%);padding:0;border-bottom:2px solid #ffcc00;}
-.y-header-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:8px 12px;}
-.y-logo{font-size:22px;font-weight:900;color:#ffcc00;letter-spacing:-.02em;text-decoration:none;font-family:Arial,sans-serif;}
-.y-logo span{color:#fff;}
-.y-search{display:flex;gap:0;flex:1;max-width:400px;}
-.y-search input{flex:1;border:2px solid #ccc;border-right:none;padding:5px 10px;font-size:13px;border-radius:3px 0 0 3px;outline:none;}
-.y-search input:focus{border-color:#500050;}
-.y-search button{background:#500050;color:#ffcc00;border:2px solid #500050;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;border-radius:0 3px 3px 0;white-space:nowrap;}
-.y-search button:hover{background:#400040;}
-/* グローバルナビ */
-.y-gnav{background:#600060;border-bottom:1px solid #ffcc00;}
-.y-gnav-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;padding:0 12px;overflow-x:auto;}
-.y-gnav a{display:inline-block;padding:7px 14px;color:#ffcc00;font-size:12px;font-weight:500;white-space:nowrap;border-right:1px solid #500050;transition:background .1s;}
-.y-gnav a:hover{background:#500050;text-decoration:none;}
-.y-gnav a.active{background:#ffcc00;color:#400040;font-weight:700;}
-/* レイアウト */
-.y-wrapper{max-width:1000px;margin:0 auto;padding:12px;display:flex;gap:14px;align-items:flex-start;}
-/* サイドナビ */
-.y-side{width:180px;flex-shrink:0;}
-.y-side-box{border:1px solid #c8a;border-radius:4px;overflow:hidden;margin-bottom:12px;}
-.y-side-box-head{background:linear-gradient(180deg,#f0d8f0,#d8a8d8);color:#400040;font-size:12px;font-weight:700;padding:5px 10px;border-bottom:1px solid #c8a;}
-.y-side-box ul{list-style:none;padding:0;}
-.y-side-box ul li a{display:block;padding:5px 10px;font-size:12px;color:#00c;border-bottom:1px solid #f0e0f0;transition:background .1s;}
-.y-side-box ul li a:hover{background:#f8f0ff;text-decoration:none;}
-.y-side-box ul li.active a{color:#c00;font-weight:700;background:#fff0f0;}
-/* メインコンテンツ */
-.y-main{flex:1;min-width:0;}
-/* パンくず */
-.y-bc{font-size:11.5px;color:#555;margin-bottom:8px;padding:5px 8px;background:#f8f0ff;border:1px solid #e8d0e8;border-radius:3px;}
-.y-bc a{color:#00c;}.y-bc .bc-sep{color:#aaa;margin:0 3px;}.y-bc .bc-current{color:#555;}
-/* ページタイトル */
-.y-page-title{font-size:17px;font-weight:700;color:#300030;border-bottom:2px solid #600060;padding-bottom:6px;margin-bottom:12px;}
-/* カテゴリグリッド（Yahoo風） */
-.y-cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
-@media(max-width:600px){.y-cat-grid{grid-template-columns:repeat(2,1fr);}}
-.y-cat-box{border:1px solid #c8a;border-radius:4px;overflow:hidden;background:#fff;}
-.y-cat-box-head{background:linear-gradient(180deg,#f0d8f0,#dfc8df);padding:5px 10px;font-size:12px;font-weight:700;color:#400040;border-bottom:1px solid #c8a;}
-.y-cat-box ul{list-style:none;padding:4px 0;}
-.y-cat-box ul li a{display:block;padding:3px 10px;font-size:11.5px;color:#00c;}
-.y-cat-box ul li a:hover{background:#f8f0ff;text-decoration:none;}
-/* コンテンツボックス */
-.y-content-box{border:1px solid #c8a;border-radius:4px;overflow:hidden;margin-bottom:14px;}
-.y-content-box-head{background:linear-gradient(180deg,#f0d8f0,#d8a8d8);padding:6px 12px;font-size:13px;font-weight:700;color:#400040;border-bottom:1px solid #c8a;}
-.y-content-box-body{padding:10px 14px;}
-/* 本文タイポグラフィ */
-h1{font-size:18px;font-weight:700;color:#300030;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #600060;}
-h2{font-size:15px;font-weight:700;background:linear-gradient(180deg,#f0d8f0,#dfc8df);border-left:4px solid #600060;padding:6px 12px;margin:16px 0 8px;color:#300030;}
-h3{font-size:13px;font-weight:700;color:#400040;border-bottom:1px dotted #c8a;padding-bottom:3px;margin:12px 0 7px;}
-h4{font-size:13px;font-weight:700;margin:10px 0 5px;}
-p{margin-bottom:10px;}ul,ol{padding-left:18px;margin-bottom:10px;}li{margin-bottom:3px;}
-blockquote{border-left:3px solid #600060;padding:7px 12px;background:#f8f0ff;margin:10px 0;color:#444;font-style:italic;}
-img{max-width:100%;margin:6px 0;}
-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px;}
-th{background:#dfc8df;color:#300030;padding:6px 10px;text-align:left;border:1px solid #c8a;font-weight:700;}
-td{padding:6px 10px;border:1px solid #e0d0e0;vertical-align:top;}
-tr:nth-child(even) td{background:#faf0ff;}
-/* フッター */
-.y-footer{background:#300030;color:#ffcc00;text-align:center;padding:12px;font-size:11.5px;border-top:2px solid #ffcc00;margin-top:24px;}
-.y-footer a{color:#ffcc00;}
-/* レスポンシブ */
-@media(max-width:700px){
-  .y-wrapper{flex-direction:column;padding:8px;}
-  .y-side{width:100%;}
-  .y-cat-grid{grid-template-columns:repeat(2,1fr);}
-  .y-header-inner{flex-wrap:wrap;}
-  .y-search{max-width:100%;order:3;width:100%;}
-}
-${partsCss.replace(/#5b8df6/g,'#00c').replace(/#eef3ff/g,'#f8f0ff').replace(/#f0f4ff/g,'#f8f0ff').replace(/#dce6ff/g,'#e8d0e8').replace(/#f8faff/g,'#fff').replace(/#4a5568/g,'#333').replace(/#8b5cf6/g,'#600060')}
-</style>
-</head>
-<body>
-<div class="y-header">
-  <div class="y-header-inner">
-    <a href="index.html" class="y-logo">${esc(siteTitle).slice(0,1)}<span>${esc(siteTitle).slice(1)}</span></a>
-    <div class="y-search"><input type="text" placeholder="キーワードを入力"><button>検索</button></div>
-  </div>
-</div>
-<div class="y-gnav">
-  <div class="y-gnav-inner">
-    ${navTop}
-  </div>
-</div>
-<div class="y-wrapper">
-  <aside class="y-side">
-    <div class="y-side-box">
-      <div class="y-side-box-head">📂 カテゴリ</div>
-      ${navSidebar}
-    </div>
-  </aside>
-  <main class="y-main">
-    <div class="y-bc">${bc || '<span class="bc-current">トップ</span>'}</div>
-    <h1 class="y-page-title">${esc(title)}</h1>
-    ${body}
-  </main>
-</div>
-<div class="y-footer">
-  Copyright &copy; ${esc(siteTitle)}. All Rights Reserved. |
-  <a href="index.html">トップへ戻る</a>
-</div>
-</body></html>`;
-}
-
-/* ── 2カラムテンプレート ── */
-function build2ColTpl(title, siteTitle, body, nav, bc, partsCss, metaDesc='', gaCode='') {
-  return `<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>${esc(title)} | ${esc(siteTitle)}</title>${metaDesc}${gaCode}
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.85;color:#2c3e50;background:#f4f6f8;min-height:100vh;}
-a{color:#2980b9;text-decoration:none;}a:hover{text-decoration:underline;}
-/* ヘッダー */
-.site-header{background:#2c3e50;color:#fff;padding:0 0;box-shadow:0 2px 6px rgba(0,0,0,.2);}
-.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;}
-.site-logo{font-size:18px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:.02em;}
-.header-nav{display:flex;gap:2px;}
-.header-nav a{color:#bdc3c7;font-size:13px;padding:6px 12px;border-radius:5px;transition:all .12s;}
-.header-nav a:hover,.header-nav a.active{color:#fff;background:rgba(255,255,255,.12);text-decoration:none;}
-/* レイアウト */
-.site-wrapper{max-width:1100px;margin:24px auto;padding:0 20px;display:flex;gap:24px;align-items:flex-start;}
-/* サイドナビ */
-.side-nav{width:220px;flex-shrink:0;position:sticky;top:24px;}
-.side-nav-inner{background:#fff;border:1px solid #dce3eb;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-.side-nav-head{background:#2c3e50;color:#fff;padding:10px 16px;font-size:13px;font-weight:700;letter-spacing:.04em;}
-.side-nav .nav-list{list-style:none;padding:4px 0;}
-.side-nav .nav-depth-0>li>a{display:block;padding:8px 16px;font-size:13.5px;color:#2c3e50;transition:all .12s;border-left:3px solid transparent;}
-.side-nav .nav-depth-0>li>a:hover{background:#eaf2fb;color:#2980b9;border-left-color:#2980b9;text-decoration:none;}
-.side-nav .nav-depth-0>li.nav-active>a{background:#eaf2fb;color:#2980b9;border-left-color:#2980b9;font-weight:700;}
-.side-nav .nav-depth-1{padding-left:12px;border-top:1px solid #f0f3f6;}
-.side-nav .nav-depth-1>li>a{display:block;padding:6px 14px;font-size:12.5px;color:#7f8c8d;transition:all .12s;}
-.side-nav .nav-depth-1>li>a:hover{color:#2980b9;text-decoration:none;}
-.side-nav .nav-depth-1>li.nav-active>a{color:#2980b9;font-weight:600;}
-.side-nav .nav-depth-2{padding-left:12px;}
-.side-nav .nav-depth-2>li>a{display:block;padding:4px 12px;font-size:12px;color:#95a5a6;transition:color .1s;}
-.side-nav .nav-depth-2>li>a:hover{color:#2980b9;text-decoration:none;}
-/* メイン */
-.main-content{flex:1;min-width:0;}
-.main-inner{background:#fff;border:1px solid #dce3eb;border-radius:8px;padding:30px 32px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-/* パンくず */
-.breadcrumb{font-size:12px;color:#95a5a6;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:3px;align-items:center;padding:8px 14px;background:#f8f9fa;border-radius:5px;border:1px solid #e5e7ea;}
-.bc-link{color:#2980b9;}.bc-sep{color:#bdc3c7;}.bc-current{color:#7f8c8d;}
-h1{font-size:24px;font-weight:700;color:#2c3e50;margin-bottom:22px;padding-bottom:10px;border-bottom:3px solid #3498db;}
-h2{font-size:18px;font-weight:700;padding:8px 14px;background:#eaf2fb;border-left:4px solid #2980b9;border-radius:0 6px 6px 0;margin:22px 0 11px;color:#2c3e50;}
-h3{font-size:15px;font-weight:700;color:#2c3e50;border-bottom:1px solid #e5e7ea;padding-bottom:5px;margin:18px 0 9px;}
-h4{font-size:14px;font-weight:600;margin:13px 0 6px;color:#34495e;}
-p{margin-bottom:13px;}ul,ol{padding-left:22px;margin-bottom:13px;}li{margin-bottom:4px;}
-blockquote{border-left:4px solid #3498db;padding:10px 16px;background:#eaf2fb;border-radius:0 7px 7px 0;margin:13px 0;color:#555;font-style:italic;}
-img{max-width:100%;border-radius:6px;margin:8px 0;box-shadow:0 2px 8px rgba(0,0,0,.08);}
-table{width:100%;border-collapse:collapse;margin:14px 0;}
-th{background:#2c3e50;color:#fff;padding:9px 13px;text-align:left;font-weight:600;}
-td{padding:8px 13px;border:1px solid #e5e7ea;}
-tr:nth-child(even) td{background:#f8f9fa;}
-/* フッター */
-.site-footer{background:#2c3e50;color:#bdc3c7;text-align:center;padding:16px;font-size:12px;margin-top:32px;}
-.site-footer a{color:#bdc3c7;}
-/* ハンバーガー */
-.hamburger{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:8px;}
-/* レスポンシブ */
-@media(max-width:768px){
-  .hamburger{display:block;}
-  .header-nav{display:none;}
-  .site-wrapper{flex-direction:column;padding:0 12px;margin:12px auto;}
-  .side-nav{width:100%;position:static;}
-  .main-inner{padding:18px 16px;}
-}
-${partsCss.replace(/#5b8df6/g,'#2980b9').replace(/#eef3ff/g,'#eaf2fb').replace(/#f0f4ff/g,'#eaf2fb').replace(/#dce6ff/g,'#d0e4f5').replace(/#f8faff/g,'#f8f9fa').replace(/#4a5568/g,'#34495e').replace(/#8b5cf6/g,'#27ae60')}
-</style>
-</head>
-<body>
-<header class="site-header">
-  <div class="header-inner">
-    <a href="index.html" class="site-logo">${esc(siteTitle)}</a>
-    <nav class="header-nav">${nav}</nav>
-    <button class="hamburger" onclick="this.nextElementSibling&&this.nextElementSibling.classList.toggle('open')" aria-label="メニュー">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-  </div>
-</header>
-<div class="site-wrapper">
-  <aside class="side-nav">
-    <div class="side-nav-inner">
-      <div class="side-nav-head">📋 メニュー</div>
-      ${nav}
-    </div>
-  </aside>
-  <main class="main-content">
-    <div class="main-inner">
-      <nav class="breadcrumb">${bc || '<span class="bc-current">トップ</span>'}</nav>
-      <h1>${esc(title)}</h1>
-      ${body}
-    </div>
-  </main>
-</div>
-<footer class="site-footer">
-  &copy; ${esc(siteTitle)} | <a href="index.html">トップへ</a>
-</footer>
-</body></html>`;
-}
-
-/* ── 3カラムテンプレート ── */
-function build3ColTpl(title, siteTitle, body, nav, bc, partsCss, metaDesc='', gaCode='') {
-  return `<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>${esc(title)} | ${esc(siteTitle)}</title>${metaDesc}${gaCode}
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.8;color:#1c1e21;background:#f0f2f5;min-height:100vh;}
-a{color:#1877f2;text-decoration:none;}a:hover{text-decoration:underline;}
-/* ヘッダー */
-.site-header{background:#1877f2;position:sticky;top:0;z-index:100;box-shadow:0 2px 4px rgba(0,0,0,.2);}
-.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:0 16px;height:50px;}
-.site-logo{font-size:20px;font-weight:900;color:#fff;text-decoration:none;white-space:nowrap;}
-.header-search{flex:1;max-width:300px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:6px 14px;font-size:13px;color:#fff;outline:none;}
-.header-search::placeholder{color:rgba(255,255,255,.7);}
-.header-nav{display:flex;gap:2px;margin-left:auto;}
-.header-nav a{color:rgba(255,255,255,.85);font-size:13px;padding:6px 10px;border-radius:5px;transition:all .12s;white-space:nowrap;}
-.header-nav a:hover,.header-nav a.active{color:#fff;background:rgba(255,255,255,.2);text-decoration:none;}
-/* 3カラムレイアウト */
-.site-wrapper{max-width:1200px;margin:0 auto;padding:16px;display:grid;grid-template-columns:220px 1fr 240px;gap:16px;align-items:flex-start;}
-/* 左ナビ */
-.left-col{position:sticky;top:66px;}
-.left-box{background:#fff;border:1px solid #dde1e7;border-radius:8px;overflow:hidden;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.05);}
-.left-box-head{background:#f0f2f5;padding:9px 14px;font-size:12px;font-weight:700;color:#65676b;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #dde1e7;}
-.left-box .nav-list{list-style:none;padding:4px 0;}
-.left-box .nav-depth-0>li>a{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:13.5px;color:#050505;transition:background .1s;border-radius:0;}
-.left-box .nav-depth-0>li>a:hover{background:#f2f4f7;text-decoration:none;}
-.left-box .nav-depth-0>li.nav-active>a{background:#e7f0fd;color:#1877f2;font-weight:700;}
-.left-box .nav-depth-0>li>a::before{content:'›';color:#b0b3b8;font-size:14px;}
-.left-box .nav-depth-1{padding-left:16px;border-top:1px solid #f0f2f5;}
-.left-box .nav-depth-1>li>a{display:block;padding:6px 14px;font-size:12.5px;color:#65676b;transition:background .1s;}
-.left-box .nav-depth-1>li>a:hover{background:#f2f4f7;text-decoration:none;}
-.left-box .nav-depth-1>li.nav-active>a{color:#1877f2;font-weight:600;}
-.left-box .nav-depth-2{padding-left:12px;}
-.left-box .nav-depth-2>li>a{display:block;padding:4px 12px;font-size:12px;color:#90949c;}
-/* メインコンテンツ */
-.main-content{min-width:0;}
-.main-card{background:#fff;border:1px solid #dde1e7;border-radius:8px;padding:24px 28px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);}
-/* パンくず */
-.breadcrumb{font-size:12px;color:#90949c;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:3px;align-items:center;}
-.bc-link{color:#1877f2;}.bc-sep{color:#bec3c9;}.bc-current{color:#65676b;}
-h1{font-size:22px;font-weight:700;color:#1c1e21;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid #1877f2;}
-h2{font-size:17px;font-weight:700;padding:8px 14px;background:#e7f0fd;border-left:4px solid #1877f2;border-radius:0 6px 6px 0;margin:20px 0 10px;color:#1c1e21;}
-h3{font-size:15px;font-weight:700;color:#1877f2;margin:16px 0 8px;border-bottom:1px solid #e0e3e8;padding-bottom:4px;}
-h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#3a3b3c;}
-p{margin-bottom:12px;}ul,ol{padding-left:20px;margin-bottom:12px;}li{margin-bottom:3px;}
-blockquote{border-left:4px solid #1877f2;padding:9px 15px;background:#e7f0fd;border-radius:0 6px 6px 0;margin:12px 0;color:#65676b;font-style:italic;}
-img{max-width:100%;border-radius:8px;margin:8px 0;}
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;}
-th{background:#1877f2;color:#fff;padding:8px 12px;text-align:left;font-weight:600;}
-td{padding:7px 12px;border:1px solid #dde1e7;}
-tr:nth-child(even) td{background:#f0f2f5;}
-/* 右サイドバー */
-.right-col{position:sticky;top:66px;}
-.side-widget{background:#fff;border:1px solid #dde1e7;border-radius:8px;overflow:hidden;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.05);}
-.side-widget-head{background:#1877f2;color:#fff;padding:9px 14px;font-size:12.5px;font-weight:700;}
-.side-widget-body{padding:12px 14px;font-size:13px;color:#3a3b3c;line-height:1.7;}
-.side-widget-body ul{list-style:none;padding:0;}
-.side-widget-body ul li{padding:5px 0;border-bottom:1px solid #f0f2f5;font-size:12.5px;}
-.side-widget-body ul li:last-child{border:none;}
-.side-widget-body ul li a{color:#1877f2;}
-/* フッター */
-.site-footer{background:#3a3b3c;color:#b0b3b8;text-align:center;padding:14px;font-size:12px;margin-top:8px;}
-.site-footer a{color:#b0b3b8;}
-/* レスポンシブ */
-@media(max-width:900px){
-  .site-wrapper{grid-template-columns:200px 1fr;}.right-col{display:none;}
-}
-@media(max-width:600px){
-  .site-wrapper{grid-template-columns:1fr;padding:8px;}
-  .left-col{position:static;}
-  .header-search{display:none;}
-  .main-card{padding:14px 12px;}
-}
-${partsCss.replace(/#5b8df6/g,'#1877f2').replace(/#eef3ff/g,'#e7f0fd').replace(/#f0f4ff/g,'#e7f0fd').replace(/#dce6ff/g,'#c6d8f8').replace(/#f8faff/g,'#f0f2f5').replace(/#4a5568/g,'#3a3b3c').replace(/#8b5cf6/g,'#42b883')}
-</style>
-</head>
-<body>
-<header class="site-header">
-  <div class="header-inner">
-    <a href="index.html" class="site-logo">${esc(siteTitle)}</a>
-    <input class="header-search" type="text" placeholder="🔍 サイト内検索…">
-    <nav class="header-nav">${nav}</nav>
-  </div>
-</header>
-<div class="site-wrapper">
-  <aside class="left-col">
-    <div class="left-box">
-      <div class="left-box-head">📋 ナビゲーション</div>
-      ${nav}
-    </div>
-  </aside>
-  <main class="main-content">
-    <div class="main-card">
-      <nav class="breadcrumb">${bc || '<span class="bc-current">トップ</span>'}</nav>
-      <h1>${esc(title)}</h1>
-      ${body}
-    </div>
-  </main>
-  <aside class="right-col">
-    <div class="side-widget">
-      <div class="side-widget-head">📌 サイト情報</div>
-      <div class="side-widget-body">
-        <p style="font-size:13px;color:#65676b;">${esc(siteTitle)}</p>
-      </div>
-    </div>
-    <div class="side-widget">
-      <div class="side-widget-head">🔗 関連リンク</div>
-      <div class="side-widget-body">
-        ${nav}
-      </div>
-    </div>
-  </aside>
-</div>
-<footer class="site-footer">
-  &copy; ${esc(siteTitle)} | <a href="index.html">トップへ</a>
-</footer>
-</body></html>`;
-}
-
 /* ── パーツ共通CSS ── */
 function getPartsCss() {
   return `.balloon{display:flex;gap:10px;align-items:flex-start;margin:14px 0;}
@@ -3683,291 +3465,6 @@ function sleep(ms) {
 }
 
 /* ════════════════════════════════
-   EXPORT — 独立型1ファイルHTML
-════════════════════════════════ */
-function exportStandaloneHTML() {
-  saveCurrent();
-  if (state.pages.length === 0) { toast('ページがありません'); return; }
-
-  const fnMap = buildFilenameMap();
-
-  // DFS順でページ収集
-  function collectDFS(parentId) {
-    const result = [];
-    children(parentId).forEach(p => { result.push(p); result.push(...collectDFS(p.id)); });
-    return result;
-  }
-  const orderedPages = [];
-  roots().forEach(p => { orderedPages.push(p); orderedPages.push(...collectDFS(p.id)); });
-
-  const siteTitle = esc(state.siteTitle || 'サイト');
-  const tpl = (state.template && state.template.current) || tplState.current || 'clean';
-  const partsCss = getPartsCss();
-
-  // テンプレート別スタイル・色設定
-  const tplConfig = {
-    clean: {
-      bg: '#f0f4ff', headerBg: '#fff', headerBorder: '#e2e8f0', headerColor: '#5b8df6',
-      navBg: '#f0f4ff', navActive: '#5b8df6', mainBg: '#fff', mainBorder: '#e2e8f0',
-      bodyFont: "'Noto Sans JP',sans-serif", bodyColor: '#1a202c', accent: '#5b8df6',
-      gfont: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css,
-    },
-    dark: {
-      bg: '#0d1117', headerBg: '#161b22', headerBorder: '#30363d', headerColor: '#58a6ff',
-      navBg: '#161b22', navActive: '#58a6ff', mainBg: '#0d1117', mainBorder: '#30363d',
-      bodyFont: "'Noto Sans JP',sans-serif", bodyColor: '#e6edf3', accent: '#58a6ff',
-      gfont: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css.replace(/#5b8df6/g,'#58a6ff').replace(/#eef3ff/g,'rgba(88,166,255,.07)').replace(/#f0f4ff/g,'rgba(88,166,255,.07)').replace(/#dce6ff/g,'#30363d').replace(/#f8faff/g,'rgba(255,255,255,.02)').replace(/#4a5568/g,'#8b949e'),
-    },
-    blog: {
-      bg: '#f9f9f9', headerBg: '#1a1a2e', headerBorder: '#2d2d4e', headerColor: '#e2b714',
-      navBg: '', navActive: '#e2b714', mainBg: '#fff', mainBorder: '#eee',
-      bodyFont: "'Noto Sans JP',sans-serif", bodyColor: '#1a1a2e', accent: '#e2b714',
-      gfont: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css.replace(/#5b8df6/g,'#e2b714').replace(/#eef3ff/g,'#fffbec').replace(/#f0f4ff/g,'#fffbec').replace(/#dce6ff/g,'#e5e7eb').replace(/#f8faff/g,'#f9fafb').replace(/#4a5568/g,'#374151').replace(/#8b5cf6/g,'#6d28d9'),
-    },
-    corp: {
-      bg: '#f0f4f8', headerBg: 'linear-gradient(135deg,#1e3a5f,#2563eb)', headerBorder: 'transparent', headerColor: '#fff',
-      navBg: '#fff', navActive: '#2563eb', mainBg: '#fff', mainBorder: '#dde3eb',
-      bodyFont: "'Noto Sans JP',sans-serif", bodyColor: '#1e293b', accent: '#2563eb',
-      gfont: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css.replace(/#5b8df6/g,'#2563eb').replace(/#eef3ff/g,'#eff6ff').replace(/#f0f4ff/g,'#eff6ff').replace(/#dce6ff/g,'#bfdbfe').replace(/#f8faff/g,'#f8faff').replace(/#4a5568/g,'#374151'),
-    },
-    doc: {
-      bg: '#fff', headerBg: '#fff', headerBorder: '#e5e7eb', headerColor: '#059669',
-      navBg: '#fff', navActive: '#059669', mainBg: '#fff', mainBorder: '#e5e7eb',
-      bodyFont: "'Inter','Noto Sans JP',sans-serif", bodyColor: '#111827', accent: '#059669',
-      gfont: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css.replace(/#5b8df6/g,'#059669').replace(/#eef3ff/g,'#f0fdf4').replace(/#f0f4ff/g,'#f0fdf4').replace(/#dce6ff/g,'#bbf7d0').replace(/#f8faff/g,'#fafafa').replace(/#4a5568/g,'#374151'),
-    },
-    port: {
-      bg: '#0a0a0a', headerBg: 'rgba(10,10,10,.95)', headerBorder: '#1f1f1f', headerColor: '#f0e68c',
-      navBg: 'transparent', navActive: '#f0e68c', mainBg: 'transparent', mainBorder: 'transparent',
-      bodyFont: "'Space Grotesk','Noto Sans JP',sans-serif", bodyColor: '#e5e5e5', accent: '#f0e68c',
-      gfont: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css.replace(/#5b8df6/g,'#f0e68c').replace(/#8b5cf6/g,'#d4a017').replace(/#eef3ff/g,'rgba(240,230,140,.07)').replace(/#f0f4ff/g,'rgba(240,230,140,.07)').replace(/#dce6ff/g,'#1f1f1f').replace(/#f8faff/g,'rgba(255,255,255,.02)').replace(/#4a5568/g,'#888'),
-    },
-    yahoo: {
-      bg: '#fff', headerBg: 'linear-gradient(180deg,#500050,#300030)', headerBorder: '#ffcc00', headerColor: '#ffcc00',
-      navBg: '#f8f0ff', navActive: '#400040', mainBg: '#fff', mainBorder: '#e8d0e8',
-      bodyFont: "'Noto Sans JP','MS PGothic',sans-serif", bodyColor: '#000', accent: '#00c',
-      gfont: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css.replace(/#5b8df6/g,'#00c').replace(/#eef3ff/g,'#f8f0ff').replace(/#f0f4ff/g,'#f8f0ff').replace(/#dce6ff/g,'#e8d0e8').replace(/#f8faff/g,'#fff').replace(/#4a5568/g,'#333').replace(/#8b5cf6/g,'#600060'),
-    },
-    '2col': {
-      bg: '#f4f6f8', headerBg: '#2c3e50', headerBorder: 'transparent', headerColor: '#3498db',
-      navBg: '#fff', navActive: '#2980b9', mainBg: '#fff', mainBorder: '#dce3eb',
-      bodyFont: "'Noto Sans JP',sans-serif", bodyColor: '#2c3e50', accent: '#2980b9',
-      gfont: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css.replace(/#5b8df6/g,'#2980b9').replace(/#eef3ff/g,'#eaf2fb').replace(/#f0f4ff/g,'#eaf2fb').replace(/#dce6ff/g,'#d0e4f5').replace(/#f8faff/g,'#f8f9fa').replace(/#4a5568/g,'#34495e'),
-    },
-    '3col': {
-      bg: '#f0f2f5', headerBg: '#1877f2', headerBorder: 'transparent', headerColor: '#fff',
-      navBg: '#fff', navActive: '#1877f2', mainBg: '#fff', mainBorder: '#dde1e7',
-      bodyFont: "'Noto Sans JP',sans-serif", bodyColor: '#1c1e21', accent: '#1877f2',
-      gfont: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap",
-      partsCssReplace: (css) => css.replace(/#5b8df6/g,'#1877f2').replace(/#eef3ff/g,'#e7f0fd').replace(/#f0f4ff/g,'#e7f0fd').replace(/#dce6ff/g,'#c6d8f8').replace(/#f8faff/g,'#f0f2f5').replace(/#4a5568/g,'#3a3b3c'),
-    },
-  };
-  const cfg = tplConfig[tpl] || tplConfig.clean;
-  const processedPartsCss = cfg.partsCssReplace(partsCss);
-
-  // 各ページのHTMLコンテンツを収集
-  const pagesData = orderedPages.map(page => ({
-    id: page.id,
-    title: page.title || '無題',
-    content: page.content || '',
-    parentId: page.parentId || null,
-  }));
-
-  // ナビ構造（ツリー）の生成
-  function buildNavItems(parentId, depth) {
-    return children(parentId).map(p => {
-      const sub = buildNavItems(p.id, depth + 1);
-      return `<li class="nav-d${depth}${p.parentId === null || (!p.parentId) ? ' nav-root' : ''}">
-        <a href="#" class="nav-link" data-pid="${p.id}">${esc(p.title||'無題')}</a>
-        ${sub ? `<ul class="nav-depth-${depth+1}">${sub}</ul>` : ''}
-      </li>`;
-    }).join('');
-  }
-  const navItems = buildNavItems(null, 0);
-  const firstPageId = orderedPages[0]?.id || '';
-
-  const standaloneHTML = `<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>${siteTitle}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="${cfg.gfont}" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:${cfg.bodyFont};font-size:15px;line-height:1.85;color:${cfg.bodyColor};background:${cfg.bg};min-height:100vh;}
-a{color:${cfg.accent};text-decoration:none;}a:hover{text-decoration:underline;}
-
-/* ヘッダー */
-.site-header{background:${cfg.headerBg};border-bottom:1px solid ${cfg.headerBorder};padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.site-logo{font-weight:700;font-size:16px;color:${cfg.headerColor};text-decoration:none;letter-spacing:.02em;cursor:pointer;}
-.hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:${cfg.headerColor};}
-
-/* レイアウト */
-.site-wrapper{display:flex;max-width:1140px;margin:0 auto;padding:24px 20px;gap:24px;align-items:flex-start;}
-
-/* サイドナビ */
-.side-nav{width:220px;flex-shrink:0;position:sticky;top:72px;background:${cfg.navBg};border-radius:10px;padding:12px 0;border:1px solid ${cfg.mainBorder};}
-.side-nav ul{list-style:none;padding:0;margin:0;}
-.side-nav .nav-d0>a{display:block;padding:8px 16px;font-size:13.5px;font-weight:500;color:${cfg.bodyColor};transition:all .12s;border-left:3px solid transparent;opacity:.75;}
-.side-nav .nav-d0>a:hover,.side-nav .nav-d0.active>a{color:${cfg.accent};border-left-color:${cfg.accent};background:${cfg.navBg};opacity:1;text-decoration:none;}
-.side-nav .nav-depth-1{padding-left:10px;}
-.side-nav .nav-depth-1 li>a{display:block;padding:5px 14px;font-size:12.5px;color:${cfg.bodyColor};opacity:.55;transition:all .1s;border-radius:4px;}
-.side-nav .nav-depth-1 li>a:hover,.side-nav .nav-depth-1 li.active>a{color:${cfg.accent};opacity:1;text-decoration:none;}
-.side-nav .nav-depth-2{padding-left:10px;}
-.side-nav .nav-depth-2 li>a{display:block;padding:3px 12px;font-size:12px;color:${cfg.bodyColor};opacity:.4;transition:color .1s;}
-.side-nav .nav-depth-2 li>a:hover,.side-nav .nav-depth-2 li.active>a{color:${cfg.accent};opacity:.8;text-decoration:none;}
-
-/* メインコンテンツ */
-.main-content{flex:1;min-width:0;background:${cfg.mainBg};border-radius:10px;padding:28px 32px;border:1px solid ${cfg.mainBorder};}
-.page-section{display:none;}
-.page-section.active{display:block;}
-
-/* パンくず */
-.breadcrumb{font-size:12px;color:#94a3b8;margin-bottom:18px;display:flex;flex-wrap:wrap;gap:3px;align-items:center;}
-.bc-link{color:${cfg.accent};cursor:pointer;}.bc-sep{color:#cbd5e1;}.bc-current{color:#64748b;}
-
-h1{font-size:24px;font-weight:700;margin-bottom:22px;padding-bottom:10px;border-bottom:2px solid ${cfg.accent};}
-h2{font-size:18px;font-weight:700;padding:9px 14px;background:${tpl==='port'?'rgba(240,230,140,.07)':tpl==='dark'?'rgba(88,166,255,.07)':'linear-gradient(135deg,'+cfg.bg+','+cfg.bg+')'};border-left:4px solid ${cfg.accent};border-radius:0 7px 7px 0;margin:22px 0 12px;}
-h3{font-size:16px;font-weight:700;color:${cfg.accent};border-bottom:1px solid ${cfg.mainBorder};padding-bottom:5px;margin:18px 0 9px;}
-h4{font-size:14px;font-weight:600;margin:13px 0 7px;}
-p{margin-bottom:13px;}ul,ol{padding-left:22px;margin-bottom:13px;}li{margin-bottom:4px;}
-blockquote{border-left:3px solid ${cfg.accent};padding:10px 15px;background:${tpl==='dark'?'rgba(88,166,255,.06)':tpl==='port'?'rgba(240,230,140,.05)':'#f8faff'};border-radius:0 7px 7px 0;margin:13px 0;font-style:italic;}
-img{max-width:100%;border-radius:8px;margin:8px 0;}
-table{width:100%;border-collapse:collapse;margin:14px 0;}
-th{background:${tpl==='dark'?'#161b22':tpl==='port'?'#111':'rgba(91,141,246,.1)'};color:${cfg.accent};padding:9px 13px;text-align:left;border:1px solid ${cfg.mainBorder};font-weight:600;}
-td{padding:8px 13px;border:1px solid ${cfg.mainBorder};}
-tr:nth-child(even) td{background:${tpl==='dark'||tpl==='port'?'rgba(255,255,255,.02)':'rgba(0,0,0,.02)'}}
-${processedPartsCss}
-
-/* モバイル対応 */
-@media(max-width:768px){
-  .hamburger{display:flex;align-items:center;justify-content:center;}
-  .site-wrapper{padding:0;gap:0;flex-direction:column;}
-  .side-nav{width:100%;position:fixed;top:56px;left:0;bottom:0;z-index:90;transform:translateX(-100%);transition:transform .25s;border-radius:0;overflow-y:auto;}
-  .side-nav.open{transform:translateX(0);}
-  .nav-overlay{display:none;position:fixed;inset:0;top:56px;background:rgba(0,0,0,.5);z-index:89;}
-  .nav-overlay.show{display:block;}
-  .main-content{border-radius:0;padding:20px 16px;border-left:none;border-right:none;}
-}
-</style>
-</head>
-<body>
-
-<header class="site-header">
-  <span class="site-logo" onclick="navigate('${firstPageId}')">${siteTitle}</span>
-  <button class="hamburger" onclick="toggleNav()" aria-label="メニュー">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-  </button>
-</header>
-
-<div class="nav-overlay" id="nav-overlay" onclick="closeNav()"></div>
-
-<div class="site-wrapper">
-  <nav class="side-nav" id="side-nav">
-    <ul class="nav-depth-0">
-      ${navItems}
-    </ul>
-  </nav>
-  <main class="main-content" id="main-content">
-    ${pagesData.map(p => `
-    <section class="page-section" id="section-${p.id}" data-id="${p.id}">
-      <div class="breadcrumb" id="bc-${p.id}"></div>
-      <h1>${esc(p.title)}</h1>
-      ${p.content}
-    </section>`).join('')}
-  </main>
-</div>
-
-<script>
-const pages = ${JSON.stringify(pagesData)};
-const pageMap = Object.fromEntries(pages.map(p => [p.id, p]));
-let currentId = '';
-
-function getAncestors(id) {
-  const anc = [];
-  let cur = pageMap[id];
-  while (cur && cur.parentId && pageMap[cur.parentId]) {
-    cur = pageMap[cur.parentId];
-    anc.unshift(cur);
-  }
-  return anc;
-}
-
-function buildBreadcrumb(id) {
-  const anc = getAncestors(id);
-  const page = pageMap[id];
-  const el = document.getElementById('bc-' + id);
-  if (!el) return;
-  let html = '<span class="bc-link" onclick="navigate(\\'${firstPageId}\\')">🏠 ホーム</span>';
-  anc.forEach(a => {
-    html += '<span class="bc-sep"> / </span><span class="bc-link" onclick="navigate(\\'' + a.id + '\\')">' + a.title + '</span>';
-  });
-  html += '<span class="bc-sep"> / </span><span class="bc-current">' + page.title + '</span>';
-  el.innerHTML = html;
-}
-
-function navigate(id) {
-  if (!pageMap[id]) return;
-  // セクション切り替え
-  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-  const sec = document.getElementById('section-' + id);
-  if (sec) sec.classList.add('active');
-  // ナビのアクティブ状態
-  document.querySelectorAll('.nav-link').forEach(a => {
-    a.closest('li').classList.toggle('active', a.dataset.pid === id);
-  });
-  // パンくず
-  buildBreadcrumb(id);
-  currentId = id;
-  // スクロールを先頭に
-  window.scrollTo(0, 0);
-  // ハッシュ更新
-  history.replaceState(null, '', '#' + id);
-  // モバイルナビを閉じる
-  closeNav();
-}
-
-function toggleNav() {
-  document.getElementById('side-nav').classList.toggle('open');
-  document.getElementById('nav-overlay').classList.toggle('show');
-}
-function closeNav() {
-  document.getElementById('side-nav').classList.remove('open');
-  document.getElementById('nav-overlay').classList.remove('show');
-}
-
-// ナビリンクにイベント設定
-document.querySelectorAll('.nav-link').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    navigate(a.dataset.pid);
-  });
-});
-
-// 初期表示
-const hash = location.hash.slice(1);
-const initId = (hash && pageMap[hash]) ? hash : '${firstPageId}';
-navigate(initId);
-<\/script>
-</body>
-</html>`;
-
-  const filename = (state.siteTitle || 'site').replace(/[\\/:*?"<>|]/g, '_') + '_standalone.html';
-  dl(standaloneHTML, filename, 'text/html;charset=utf-8');
-  toast('✓ ' + filename + ' を保存しました');
-}
-
-/* ════════════════════════════════
    EXPORT — 現在のページのみ
 ════════════════════════════════ */
 function exportCurrentHTML() {
@@ -3985,6 +3482,192 @@ function exportCurrentHTML() {
 /* ════════════════════════════════
    PROJECT SAVE / LOAD
 ════════════════════════════════ */
+/* ════════════════════════════════
+   アップロードメニュー
+════════════════════════════════ */
+function toggleUploadMenu(e) {
+  e.stopPropagation();
+  // 設定情報をメニューに反映
+  const ftp = state.ftp || {};
+  const gh  = state.github || {};
+  const ftpInfo = document.getElementById('upload-ftp-info');
+  const ghInfo  = document.getElementById('upload-gh-info');
+  if (ftpInfo) {
+    ftpInfo.textContent = ftp.host
+      ? `${ftp.protocol || 'ftp'}://${ftp.host}${ftp.dir || ''}`
+      : '⚠️ FTP設定がありません';
+  }
+  if (ghInfo) {
+    ghInfo.textContent = gh.username && gh.token
+      ? `${gh.username}/${gh.reponame || '(リポジトリ未設定)'}`
+      : '⚠️ GitHub設定がありません';
+  }
+  document.getElementById('upload-menu').classList.toggle('open');
+}
+function closeUploadMenu() {
+  document.getElementById('upload-menu').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('upload-menu-wrap');
+  if (wrap && !wrap.contains(e.target)) closeUploadMenu();
+});
+
+/* FTP ワンクリックアップロード */
+async function quickUploadFtp() {
+  const ftp = state.ftp || {};
+  if (!ftp.host) {
+    toast('⚠️ FTP設定がありません。「FTP設定」から設定してください。');
+    openFtpModal();
+    return;
+  }
+  // FTPは直接ブラウザからは接続不可のため、設定情報をコピーして案内
+  const info = [
+    `プロトコル: ${ftp.protocol || 'ftp'}`,
+    `ホスト: ${ftp.host}`,
+    `ポート: ${ftp.port || '21'}`,
+    `ユーザー: ${ftp.user}`,
+    `ディレクトリ: ${ftp.dir || '/public_html/'}`,
+  ].join('\n');
+  await navigator.clipboard.writeText(info).catch(() => {});
+  // HTMLを先にフォルダ出力
+  toast('📋 FTP設定をコピーしました。全ページ出力後にFTPクライアントでアップロードしてください。');
+  setTimeout(() => exportAllPages(), 500);
+}
+
+/* GitHub ワンクリックpush */
+async function quickUploadGithub() {
+  const gh = state.github || {};
+  if (!gh.username || !gh.token) {
+    toast('⚠️ GitHub設定がありません。「GitHub」から設定してください。');
+    openGithubModal();
+    return;
+  }
+  // pushToGithubを直接呼び出す
+  await pushToGithub();
+}
+
+/* ════════════════════════════════
+   ファイルメニュー
+════════════════════════════════ */
+function toggleFileMenu(e) {
+  e.stopPropagation();
+  document.getElementById('file-menu').classList.toggle('open');
+}
+function closeFileMenu() {
+  document.getElementById('file-menu').classList.remove('open');
+}
+// 画面外クリックで閉じる
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('file-menu-wrap');
+  if (wrap && !wrap.contains(e.target)) closeFileMenu();
+});
+
+/* ════════════════════════════════
+   名前をつけて保存 — 単一HTMLファイル
+════════════════════════════════ */
+async function saveAsCurrentPage() {
+  saveCurrent();
+  if (!currentId) { toast('ページを選択してください'); return; }
+  const page = state.pages.find(p => p.id === currentId);
+  if (!page) return;
+  const fnMap = buildFilenameMap();
+  const html  = buildHTML(page, state.pages, fnMap);
+  const suggest = fnMap[page.id] || (page.id + '.html');
+
+  if (window.showSaveFilePicker) {
+    try {
+      const fh = await window.showSaveFilePicker({
+        suggestedName: suggest,
+        types: [{ description: 'HTMLファイル', accept: { 'text/html': ['.html'] } }]
+      });
+      const wr = await fh.createWritable();
+      await wr.write(html);
+      await wr.close();
+      toast(`✓ ${fh.name} を保存しました`);
+    } catch(e) {
+      if (e.name !== 'AbortError') toast('⚠️ 保存に失敗しました');
+    }
+  } else {
+    await dl(html, suggest, 'text/html;charset=utf-8');
+    toast(`✓ ${suggest} をダウンロードしました`);
+  }
+}
+
+/* ════════════════════════════════
+   フォルダに保存（全ページHTML + project.json）
+════════════════════════════════ */
+async function saveSiteToFolder() {
+  saveCurrent();
+  if (state.pages.length === 0) { toast('ページがありません'); return; }
+
+  if (!window.showDirectoryPicker) {
+    toast('⚠️ このブラウザはフォルダ選択未対応です。Chrome/Edgeをお使いください。');
+    return;
+  }
+
+  let dirHandle;
+  try {
+    dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+  } catch(e) {
+    if (e.name !== 'AbortError') toast('⚠️ フォルダ選択がキャンセルされました');
+    return;
+  }
+
+  const fnMap = buildFilenameMap();
+
+  // ページをDFS順で収集
+  function collectDFS(parentId) {
+    const result = [];
+    children(parentId).forEach(p => { result.push(p); result.push(...collectDFS(p.id)); });
+    return result;
+  }
+  const allPages = [];
+  roots().forEach(p => { allPages.push(p); allPages.push(...collectDFS(p.id)); });
+
+  const total = allPages.length + 1; // +1 はproject.json
+  let done = 0;
+
+  toast(`📁 フォルダに書き出し中…`);
+
+  // HTMLページを書き出し
+  for (const page of allPages) {
+    const filename = fnMap[page.id] || (page.id + '.html');
+    const html = buildHTML(page, state.pages, fnMap);
+    try {
+      const fh = await dirHandle.getFileHandle(filename, { create: true });
+      const wr = await fh.createWritable();
+      await wr.write(html);
+      await wr.close();
+    } catch(e) {
+      toast(`⚠️ ${filename} の書き込みに失敗しました`);
+    }
+    done++;
+  }
+
+  // CSSファイルも書き出し（linkモードで取り込んだ場合）
+  if (state._importedCssFiles && state._importedCssFiles.length > 0) {
+    for (const cssFile of state._importedCssFiles) {
+      try {
+        const fh = await dirHandle.getFileHandle(cssFile.filename, { create: true });
+        const wr = await fh.createWritable();
+        await wr.write(cssFile.content);
+        await wr.close();
+      } catch(e) {}
+    }
+  }
+
+  // project.json も保存（後から読み込める）
+  try {
+    const json = JSON.stringify(state, null, 2);
+    const fh = await dirHandle.getFileHandle('project.json', { create: true });
+    const wr = await fh.createWritable();
+    await wr.write(json);
+    await wr.close();
+  } catch(e) {}
+
+  toast(`✓ ${allPages.length}ページ + project.json をフォルダに保存しました`);
+}
+
 function saveProject() {
   saveCurrent();
   state.siteTitle = state.siteTitle || 'マイサイト';
@@ -4161,7 +3844,7 @@ function createSiteFromWizard() {
   const url   = document.getElementById('wiz-site-url').value.trim();
 
   tplState.current = wizSelectedTpl;
-  const names = {clean:'クリーン',dark:'ダーク',blog:'ブログ',corp:'コーポレート',doc:'ドキュメント',port:'ポートフォリオ',yahoo:'Yahooディレクトリ','2col':'2カラム','3col':'3カラム'};
+  const names = {clean:'クリーン',dark:'ダーク',blog:'ブログ',corp:'コーポレート',doc:'ドキュメント',port:'ポートフォリオ'};
   document.getElementById('current-tpl-name').textContent = names[wizSelectedTpl] || wizSelectedTpl;
 
   state.siteTitle = title;
@@ -4194,10 +3877,6 @@ function createSiteFromWizard() {
   currentId = null;
   renderList();
   if (newPages.length > 0) openPage(newPages[0].id);
-  // 新規プロジェクトとして登録
-  const newProjId = uid();
-  pmSetCurrent(newProjId);
-  pmSaveCurrent();
   lsSave();
   closeWizard();
   toast(`✓ 「${title}」を作成しました（${newPages.length}ページ）`);
@@ -4389,6 +4068,73 @@ function initDragDrop(row, pageId) {
 }
 
 /* ════════════════════════════════
+   EDITOR MODE  wysiwyg | normal | html
+════════════════════════════════ */
+let editorMode = localStorage.getItem('cms_editor_mode') || 'wysiwyg';
+
+function setEditorMode(mode) {
+  // 現在の内容を保存
+  saveCurrent();
+  editorMode = mode;
+  localStorage.setItem('cms_editor_mode', mode);
+
+  // ボタンのアクティブ状態を更新
+  ['wysiwyg','normal','html'].forEach(m => {
+    const btn = document.getElementById('mode-' + m);
+    if (!btn) return;
+    const active = m === mode;
+    btn.style.background  = active ? 'var(--accent)' : 'none';
+    btn.style.color       = active ? '#fff' : 'var(--text2)';
+    btn.style.fontWeight  = active ? '600' : 'normal';
+  });
+
+  // ツールバー（書式ボタン群）はHTML編集時は非表示
+  const tgs = document.querySelectorAll('#toolbar .tg:not(:last-child)');
+  tgs.forEach(tg => { tg.style.display = mode === 'html' ? 'none' : ''; });
+
+  // パーツバーはHTML編集時は非表示
+  const pb = document.getElementById('parts-bar');
+  if (pb) pb.style.display = mode === 'html' ? 'none' : '';
+
+  // 各エリアの表示切替
+  const frame    = document.getElementById('wysiwyg-frame');
+  const scroll   = document.getElementById('editor-scroll');
+  const htmlWrap = document.getElementById('html-editor-wrap');
+
+  frame.style.display    = mode === 'wysiwyg' ? 'flex' : 'none';
+  scroll.style.display   = mode === 'normal'  ? '' : 'none';
+  htmlWrap.style.display = mode === 'html'    ? 'flex' : 'none';
+
+  // 現在のページを再表示
+  if (currentId) {
+    const p = state.pages.find(p => p.id === currentId);
+    if (!p) return;
+    if (mode === 'wysiwyg') {
+      initWysiwygFrame(p);
+    } else if (mode === 'normal') {
+      document.getElementById('editor').innerHTML = p.content || '';
+      wysiwygReady = false;
+    } else if (mode === 'html') {
+      document.getElementById('html-editor').value = p.content || '';
+      wysiwygReady = false;
+    }
+  }
+}
+
+function onHtmlEditorInput() {
+  // HTMLエディタの入力をeditorに同期
+  const html = document.getElementById('html-editor').value;
+  document.getElementById('editor').innerHTML = html;
+  updateRP();
+  // 自動保存
+  if (currentId) {
+    const p = state.pages.find(p => p.id === currentId);
+    if (p) p.content = html;
+    lsSave();
+  }
+}
+
+/* ════════════════════════════════
    MOBILE UI CONTROLS
 ════════════════════════════════ */
 function toggleMobileMenu() {
@@ -4436,372 +4182,11 @@ const origAddPage = typeof addPage === 'function' ? addPage : null;
 ════════════════════════════════ */
 function lsSave() {
   try { localStorage.setItem('cms_state_v3', JSON.stringify(state)); } catch(e) {}
-  // プロジェクトストアにも同期
-  try {
-    const curId = pmCurrentId();
-    if (curId) {
-      const projects = pmLoad();
-      if (projects[curId]) {
-        projects[curId].state = JSON.parse(JSON.stringify(state));
-        projects[curId].title = state.siteTitle || 'マイサイト';
-        projects[curId].tpl = tplState.current || 'clean';
-        projects[curId].updatedAt = Date.now();
-        pmSave(projects);
-        updateProjBar();
-      }
-    }
-  } catch(e) {}
 }
 
 /* ════════════════════════════════
-   PROJECT MANAGER
+   UTILS
 ════════════════════════════════ */
-const PM_KEY = 'cms_projects_v1';
-const PM_CUR = 'cms_current_proj';
-
-function pmLoad() {
-  try { return JSON.parse(localStorage.getItem(PM_KEY)) || {}; } catch(e) { return {}; }
-}
-function pmSave(projects) {
-  try { localStorage.setItem(PM_KEY, JSON.stringify(projects)); } catch(e) {}
-}
-function pmCurrentId() {
-  // URLの ?proj=ID を最優先、なければ localStorage にフォールバック
-  const params = new URLSearchParams(location.search);
-  return params.get('proj') || localStorage.getItem(PM_CUR) || null;
-}
-function pmSetCurrent(id) {
-  localStorage.setItem(PM_CUR, id);
-  try {
-    const url = new URL(location.href);
-    url.searchParams.set('proj', id);
-    history.replaceState(null, '', url.toString());
-  } catch(e) {}
-}
-
-// 現在のstateをプロジェクトとして保存（初回はIDを発行）
-function pmSaveCurrent() {
-  saveCurrent();
-  const projects = pmLoad();
-  let curId = pmCurrentId();
-  if (!curId) {
-    curId = uid();
-    pmSetCurrent(curId);
-  }
-  projects[curId] = {
-    id: curId,
-    title: state.siteTitle || 'マイサイト',
-    updatedAt: Date.now(),
-    state: JSON.parse(JSON.stringify(state)),
-    tpl: tplState.current,
-  };
-  pmSave(projects);
-  lsSave();
-  updateProjBar();
-}
-
-// プロジェクトをロードしてUIに反映
-function pmLoadProject(id) {
-  const projects = pmLoad();
-  const proj = projects[id];
-  if (!proj) return;
-  pmSetCurrent(id);
-  state = proj.state || proj; // 旧形式互換
-  tplState.current = proj.tpl || 'clean';
-  currentId = null;
-  document.getElementById('site-title-display').textContent = state.siteTitle || 'マイサイト';
-  renderList();
-  if (state.pages && state.pages.length > 0) openPage(state.pages[0].id);
-  lsSave();
-  updateProjBar();
-}
-
-function updateProjBar() {
-  // サイドバーのサイト一覧を再描画
-  renderSiteList();
-}
-
-function renderSiteList() {
-  const wrap = document.getElementById('site-list-items');
-  if (!wrap) return;
-  const projects = pmLoad();
-  const curId = pmCurrentId();
-  const list = Object.values(projects).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-
-  if (list.length === 0) {
-    wrap.innerHTML = '<div style="padding:8px 12px;font-size:11.5px;color:var(--text3);">サイトがありません</div>';
-    return;
-  }
-
-  wrap.innerHTML = list.map(p => {
-    const isCur = p.id === curId;
-    const pageCount = (p.state?.pages || []).length;
-    const hasFtp = !!(p.state?.ftp?.host);
-    const hasGh  = !!(p.state?.github?.username && p.state?.github?.token);
-    const tabUrl = (() => { try { const u = new URL(location.href); u.searchParams.set('proj', p.id); return u.toString(); } catch(e) { return '#'; } })();
-    return `<div class="si${isCur ? ' active' : ''}">
-      <span class="si-icon" onclick="siteListSwitch('${p.id}')" style="cursor:pointer;">🌐</span>
-      <span class="si-name" title="${esc(p.title)}" onclick="siteListSwitch('${p.id}')" style="cursor:pointer;">${esc(p.title)}</span>
-      <span class="si-pages">${pageCount}p</span>
-      <div class="si-actions" onclick="event.stopPropagation()">
-        <button class="si-act${hasFtp?' si-act-ftp':''}" onclick="openFtpForSite('${p.id}')" title="FTP設定${hasFtp?' (設定済み)':''}">🖥</button>
-        <button class="si-act${hasGh?' si-act-gh':''}" onclick="pushGhForSite('${p.id}')" title="GitHubへpush${hasGh?' (設定済み)':''}">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-        </button>
-        <a href="${tabUrl}" target="_blank" class="si-act newtab" title="新しいタブで開く" style="text-decoration:none;">↗</a>
-        <button class="si-act del" onclick="deleteSiteFromList('${p.id}')" title="削除">✕</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function siteListSwitch(id) {
-  const curId = pmCurrentId();
-  if (id === curId) return;
-  pmSaveCurrent();
-  pmLoadProject(id);
-  toast('✓ ' + (state.siteTitle || 'サイト') + ' に切り替えました');
-}
-
-function deleteSiteFromList(id) {
-  const projects = pmLoad();
-  const proj = projects[id];
-  if (!proj) return;
-  if (!confirm(`「${proj.title}」を削除しますか？`)) return;
-  delete projects[id];
-  pmSave(projects);
-  const curId = pmCurrentId();
-  if (id === curId) {
-    const remaining = Object.values(projects).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-    if (remaining.length > 0) pmLoadProject(remaining[0].id);
-    else pmSetCurrent('');
-  }
-  renderSiteList();
-  toast('🗑 削除しました');
-}
-
-// サイト一覧から直接FTP設定を開く
-function openFtpForSite(projId) {
-  const curId = pmCurrentId();
-  if (projId !== curId) {
-    // 対象サイトに切り替えてから開く
-    pmSaveCurrent();
-    pmLoadProject(projId);
-  }
-  openFtpModal();
-}
-
-// サイト一覧から直接GitHubへpush
-function pushGhForSite(projId) {
-  const curId = pmCurrentId();
-  if (projId !== curId) {
-    pmSaveCurrent();
-    pmLoadProject(projId);
-  }
-  // GitHub設定済みならpushタブを直接開く、未設定なら設定タブ
-  const gh = state.github || {};
-  openGithubModal();
-  if (gh.username && gh.token) {
-    ghTab('push', document.getElementById('gh-tab-push'));
-  } else {
-    ghTab('setup', document.getElementById('gh-tab-setup'));
-    toast('⚠️ まずGitHub設定を行ってください');
-  }
-}
-
-function openProjectModal() {
-  pmSaveCurrent(); // 開く前に現在を保存
-  renderProjectList();
-  document.getElementById('project-modal').style.display = 'flex';
-}
-function closeProjectModal() {
-  document.getElementById('project-modal').style.display = 'none';
-}
-
-function renderProjectList() {
-  const wrap = document.getElementById('proj-list-wrap');
-  const projects = pmLoad();
-  const curId = pmCurrentId();
-  const list = Object.values(projects).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-
-  if (list.length === 0) {
-    wrap.innerHTML = '<p style="color:var(--text3);font-size:13px;text-align:center;padding:20px 0;">プロジェクトがありません</p>';
-    return;
-  }
-
-  wrap.innerHTML = list.map(p => {
-    const isCur = p.id === pmCurrentId();
-    const pages = (p.state?.pages || []).length;
-    const date = p.updatedAt ? new Date(p.updatedAt).toLocaleDateString('ja-JP', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
-    const tplNames = {clean:'クリーン',dark:'ダーク',blog:'ブログ',corp:'コーポレート',doc:'ドキュメント',port:'ポートフォリオ',yahoo:'Yahooディレクトリ','2col':'2カラム','3col':'3カラム',custom:'カスタム'};
-    const tplLabel = tplNames[p.tpl] || p.tpl || '';
-    // 新しいタブで開くURL（?proj=ID）
-    const tabUrl = (() => { const u = new URL(location.href); u.searchParams.set('proj', p.id); return u.toString(); })();
-    return `
-    <div class="proj-item${isCur ? ' current' : ''}" onclick="switchProject('${p.id}')">
-      <div class="proj-item-icon">🌐</div>
-      <div class="proj-item-info">
-        <div class="proj-item-title">${esc(p.title)}</div>
-        <div class="proj-item-meta">${pages}ページ　${tplLabel ? tplLabel + '　' : ''}${date ? '更新: ' + date : ''}</div>
-      </div>
-      ${isCur ? '<span style="font-size:11px;color:var(--ok);font-weight:700;flex-shrink:0;">編集中</span>' : ''}
-      <div class="proj-item-actions" onclick="event.stopPropagation()">
-        <a href="${tabUrl}" target="_blank" class="proj-act-btn" title="新しいタブで開く" style="text-decoration:none;">↗</a>
-        <button class="proj-act-btn" onclick="deleteProject('${p.id}')" title="削除">🗑</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function switchProject(id) {
-  const curId = pmCurrentId();
-  if (id === curId) { closeProjectModal(); return; }
-  pmSaveCurrent(); // 現在を保存
-  pmLoadProject(id);
-  closeProjectModal();
-  toast('✓ プロジェクトを切り替えました');
-}
-
-function deleteProject(id) {
-  const projects = pmLoad();
-  const proj = projects[id];
-  if (!proj) return;
-  if (!confirm(`「${proj.title}」を削除しますか？\nこの操作は取り消せません。`)) return;
-  delete projects[id];
-  pmSave(projects);
-  // 削除したのが現在のプロジェクトなら、残りの最初のものに切り替え
-  const curId = pmCurrentId();
-  if (id === curId) {
-    const remaining = Object.values(projects).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
-    if (remaining.length > 0) {
-      pmLoadProject(remaining[0].id);
-    } else {
-      pmSetCurrent('');
-    }
-  }
-  renderProjectList();
-  toast('🗑 プロジェクトを削除しました');
-}
-
-function newProjectFromModal() {
-  pmSaveCurrent(); // 現在を保存してから新規へ
-  closeProjectModal();
-  openNewWizard();
-}
-
-/* ════════════════════════════════
-   TOPBAR DROPDOWNS (FTP / GitHub)
-════════════════════════════════ */
-function toggleTbDropdown(type) {
-  const menu = document.getElementById(type + '-dd-menu');
-  const isOpen = menu.classList.contains('open');
-  closeTbDropdowns();
-  if (!isOpen) {
-    buildTbDropdownSites(type);
-    menu.classList.add('open');
-  }
-}
-
-function closeTbDropdowns() {
-  document.querySelectorAll('.tb-dropdown-menu').forEach(m => m.classList.remove('open'));
-}
-
-// ドロップダウン外クリックで閉じる
-document.addEventListener('click', e => {
-  if (!e.target.closest('.tb-dropdown')) closeTbDropdowns();
-});
-
-function buildTbDropdownSites(type) {
-  const wrap = document.getElementById(type + '-dd-sites');
-  if (!wrap) return;
-  const projects = pmLoad();
-  const curId = pmCurrentId();
-  const list = Object.values(projects).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-
-  if (list.length === 0) {
-    wrap.innerHTML = '<div style="padding:6px 14px;font-size:12px;color:var(--text3);">サイトがありません</div>';
-    return;
-  }
-
-  wrap.innerHTML = list.map(p => {
-    const isCur = p.id === curId;
-    if (type === 'ftp') {
-      const hasFtp = !!(p.state?.ftp?.host);
-      const badge = hasFtp
-        ? `<span class="dd-badge">設定済</span>`
-        : `<span class="dd-badge warn">未設定</span>`;
-      return `<button class="tb-dd-item" onclick="openFtpForSite('${p.id}');closeTbDropdowns()">
-        <span style="font-size:12px;">🌐</span>
-        <span class="dd-site-name">${esc(p.title)}${isCur ? ' ✎' : ''}</span>
-        ${badge}
-      </button>`;
-    } else {
-      const hasGh = !!(p.state?.github?.username && p.state?.github?.token);
-      const badge = hasGh
-        ? `<span class="dd-badge">設定済</span>`
-        : `<span class="dd-badge warn">未設定</span>`;
-      return `<button class="tb-dd-item" onclick="pushGhForSite('${p.id}');closeTbDropdowns()">
-        <span style="font-size:12px;">🌐</span>
-        <span class="dd-site-name">${esc(p.title)}${isCur ? ' ✎' : ''}</span>
-        ${badge}
-      </button>`;
-    }
-  }).join('');
-}
-
-/* ════════════════════════════════
-   PAGE PREVIEW POPUP
-════════════════════════════════ */
-let _ppTimer = null;
-let _ppCurrentId = null;
-
-function showPagePreview(pageId, rowEl) {
-  clearTimeout(_ppTimer);
-  _ppTimer = setTimeout(() => {
-    const page = state.pages.find(p => p.id === pageId);
-    if (!page) return;
-
-    const popup = document.getElementById('page-preview-popup');
-    const titleEl = document.getElementById('pp-title');
-    const iframe = document.getElementById('pp-iframe');
-
-    // 内容が変わったときだけiframeを更新（ちらつき防止）
-    if (_ppCurrentId !== pageId) {
-      _ppCurrentId = pageId;
-      titleEl.textContent = page.title || '無題';
-      const fnMap = buildFilenameMap();
-      const html = buildHTML(page, state.pages, fnMap);
-      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      // 前のURLを解放
-      if (iframe._blobUrl) URL.revokeObjectURL(iframe._blobUrl);
-      iframe._blobUrl = url;
-      iframe.src = url;
-    }
-
-    // 位置計算：サイドバーの右端に表示
-    const sidebar = document.getElementById('sidebar');
-    const sbRect = sidebar.getBoundingClientRect();
-    const rowRect = rowEl.getBoundingClientRect();
-    const popupH = 218; // title(38) + frame(180)
-    const viewH = window.innerHeight;
-
-    let top = rowRect.top;
-    // 画面下にはみ出す場合は上に寄せる
-    if (top + popupH > viewH - 10) top = viewH - popupH - 10;
-    if (top < 10) top = 10;
-
-    popup.style.left = (sbRect.right + 6) + 'px';
-    popup.style.top = top + 'px';
-    popup.classList.add('show');
-  }, 280); // 280ms ホバー後に表示
-}
-
-function hidePagePreview() {
-  clearTimeout(_ppTimer);
-  const popup = document.getElementById('page-preview-popup');
-  popup.classList.remove('show');
-}
 function esc(s) {
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
@@ -4842,6 +4227,17 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => { saveCurrent(); lsSave(); }, 800);
   });
+
+  // ツールバー・パーツバーのボタンをクリックしてもiframeのフォーカスが外れないようにする
+  document.querySelectorAll('#toolbar .te, #toolbar .tg, #parts-bar .pb').forEach(el => {
+    el.addEventListener('mousedown', e => {
+      // フォーカスがwysiwyg-frame内にある場合のみ preventDefault
+      if (wysiwygReady && getWysiwygDoc()?.getElementById('wysiwyg-editable')) {
+        e.preventDefault();
+      }
+    });
+  });
+
   init();
 });
 
